@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.ilender.transportesforilender.ui.home.HomeFragment"
+        android:label="Inicio"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_chofer"
+        android:name="com.ilender.transportesforilender.ui.chofer.ChoferFragment"
+        android:label="Choferes"
+        tools:layout="@layout/fragment_chofer" />
+
+    <fragment
+        android:id="@+id/nav_cliente"
+        android:name="com.ilender.transportesforilender.ui.cliente.ClienteFragment"
+        android:label="Clientes"
+        tools:layout="@layout/fragment_cliente" />
+
+    <fragment
+        android:id="@+id/nav_ruta"
+        android:name="com.ilender.transportesforilender.ui.ruta.RutaFragment"
+        android:label="Ruta"
+        tools:layout="@layout/fragment_ruta" />
+
+    <fragment
+        android:id="@+id/nav_vehiculo"
+        android:name="com.ilender.transportesforilender.ui.vehiculo.VehiculoFragment"
+        android:label="Vehiculos"
+        tools:layout="@layout/fragment_vehiculo" />
+
+
+    <fragment
+        android:id="@+id/nav_reporte"
+        android:name="com.ilender.transportesforilender.ui.reporte.ReporteFragment"
+        android:label="Reportes"
+        tools:layout="@layout/fragment_reporte" />
+
+    <fragment
+        android:id="@+id/nav_rutas_chofer"
+        android:name="com.ilender.transportesforilender.ui.rutas_chofer.RutasChoferFragment"
+        android:label="Rutas"
+        tools:layout="@layout/fragment_rutas_chofer" />
+</navigation>

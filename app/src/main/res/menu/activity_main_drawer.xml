@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="Inicio" />
+        <item
+            android:id="@+id/nav_chofer"
+            android:icon="@drawable/chofer"
+            android:title="Chofer" />
+        <item
+            android:id="@+id/nav_ruta"
+            android:icon="@drawable/ruta"
+            android:title="Ruta"/>
+        <item
+            android:id="@+id/nav_cliente"
+            android:icon="@drawable/cliente"
+            android:title="Cliente" />
+        <item
+            android:id="@+id/nav_vehiculo"
+            android:icon="@drawable/vehiculo"
+            android:title="Vehiculo"/>
+
+        <item
+            android:id="@+id/nav_reporte"
+            android:icon="@drawable/reporte"
+            android:title="Reporte"/>
+        <item
+            android:id="@+id/nav_rutas_chofer"
+            android:icon="@drawable/rutas"
+            android:title="Rutas"/>
+    </group>
+</menu>
