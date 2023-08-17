@@ -15,6 +15,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,6 +68,37 @@ public class IniciarActivity extends AppCompatActivity implements OnMapReadyCall
         tipo = getIntent().getExtras().getString("tipo");
         idRuta = getIntent().getExtras().getString("idRuta");
         txt56 = findViewById(R.id.txt56);
+
+        // Verificar si el GPS está activado
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        if (!isGPSEnabled) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("El GPS no está activado. Por favor, actívalo para usar esta función.")
+                    .setCancelable(false)
+                    .setPositiveButton("Configuración", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            mostrarMensajeActivarGPS();
+                        }
+                    });
+
+            AlertDialog alert = alertDialogBuilder.create();
+            alert.show();
+        } else {
+            // Guardar la ubicación en Firebase
+            // Aquí puedes poner tu código para guardar la ubicación en Firebase
+        }
+
+
+
 
         if (tipo.equals("llegada")) {
             txt56.setText("LLEGADA A DESTINO");
@@ -126,7 +158,28 @@ public class IniciarActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
     }
+//////////////////////////////////////////////////////
+    private void mostrarMensajeActivarGPS() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Para guardar la ubicación, es necesario activar el GPS. ¿Deseas activarlo ahora?")
+                .setCancelable(false)
+                .setPositiveButton("Configuración", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        // Aquí puedes realizar alguna acción adicional si el usuario ha cancelado nuevamente
+                    }
+                });
 
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+/////////////////////////////////////////////////////////////////////////
     private void getLocalizacion() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
