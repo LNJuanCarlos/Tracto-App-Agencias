@@ -22,4 +22,5 @@
     <string name="cerrar_sesion">Cerrar Sesion</string>
     <string name="first_fragment_label">firstfragment</string>
     <string name="second_fragment_label">secondfragment</string>
+    <string name="bienvenidostring">BIENVENIDO</string>
 </resources>

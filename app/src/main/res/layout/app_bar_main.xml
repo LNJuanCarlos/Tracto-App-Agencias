@@ -8,14 +8,14 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:theme="@style/Theme.TransportesForIlender.AppBarOverlay">
+        android:layout_height="45dp"
+        android:theme="@style/ShapeAppearanceOverlay.Material3.Button">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="#FFFFFF"
             app:popupTheme="@style/Theme.TransportesForIlender.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
