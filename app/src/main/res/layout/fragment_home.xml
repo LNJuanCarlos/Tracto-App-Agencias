@@ -14,7 +14,8 @@
         android:src="@drawable/logoilender"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/todo" />
 
     <TextView
         android:id="@+id/textView5"
@@ -63,14 +64,14 @@
                     android:backgroundTint="#7c4dff"
                     android:padding="10dp"
                     android:src="@drawable/finalizadas"
-                    />
+                    android:contentDescription="@string/todo" />
 
                 <TextView
                     android:id="@+id/txtRutasFinalizadasDeHoy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="0"
+                    android:text="@string/TextoCero"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -85,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="RUTAS FINALIZADAS DE HOY"
+                    android:text="@string/rutas_finalizadas_de_hoy"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
@@ -120,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="0"
+                    android:text="@string/TextoCero"
                     android:textSize="24sp"
                     android:textStyle="bold"/>
 
@@ -135,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="RUTAS PENDIENTES DE HOY"
+                    android:text="@string/rutas_pendientes_de_hoy"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
@@ -186,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="SIN DATA"
+                    android:text="@string/sin_data"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
@@ -201,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="TOP VEHICULO DEL MES"
+                    android:text="@string/top_vehiculo_del_mes"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
@@ -237,7 +238,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="SIN DATA"
+                    android:text="@string/sin_data"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
@@ -252,7 +253,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="TOP CHOFER DEL MES"
+                    android:text="@string/top_chofer_del_mes"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
@@ -302,7 +303,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
-                    android:text="0"
+                    android:text="@string/TextoCero"
                     android:textSize="24sp"
                     android:textStyle="bold"/>
 
@@ -311,7 +312,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="RUTAS REALIZADAS DEL MES"
+                    android:text="@string/rutas_realizadas_del_mes"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
@@ -361,7 +362,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:text="0"
+                    android:text="@string/TextoCero"
                     android:textSize="24sp"
                     android:textStyle="bold"/>
 
@@ -370,7 +371,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="RUTAS REALIZADAS DEL MES"
+                    android:text="@string/rutas_realizadas_del_mes"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
@@ -420,7 +421,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:text="0"
+                    android:text="@string/TextoCero"
                     android:textSize="24sp"
                     android:textStyle="bold"/>
 
@@ -429,7 +430,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="RUTAS PENDIENTES DEL DIA"
+                    android:text="@string/rutas_pendientes_del_dia"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
@@ -479,7 +480,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:text="0"
+                    android:text="@string/TextoCero"
                     android:textSize="24sp"
                     android:textStyle="bold"/>
 
@@ -488,7 +489,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="RUTAS FINALIZADAS DEL DIA"
+                    android:text="@string/rutas_finalizadas_del_dia"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 

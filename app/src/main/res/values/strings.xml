@@ -23,4 +23,14 @@
     <string name="first_fragment_label">firstfragment</string>
     <string name="second_fragment_label">secondfragment</string>
     <string name="bienvenidostring">BIENVENIDO</string>
+    <string name="TextoCero">0</string>
+    <string name="rutas_finalizadas_de_hoy">RUTAS FINALIZADAS DE HOY</string>
+    <string name="rutas_pendientes_de_hoy">RUTAS PENDIENTES DE HOY</string>
+    <string name="sin_data">SIN DATA</string>
+    <string name="top_vehiculo_del_mes">TOP VEHICULO DEL MES</string>
+    <string name="top_chofer_del_mes">TOP CHOFER DEL MES</string>
+    <string name="rutas_realizadas_del_mes">RUTAS REALIZADAS DEL MES</string>
+    <string name="rutas_pendientes_del_dia">RUTAS PENDIENTES DEL DIA</string>
+    <string name="rutas_finalizadas_del_dia">RUTAS FINALIZADAS DEL DIA</string>
+    <string name="todo">TODO</string>
 </resources>
