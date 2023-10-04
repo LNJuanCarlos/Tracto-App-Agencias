@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -121,6 +122,35 @@ public class AtencionActivity extends AppCompatActivity implements OnMapReadyCal
         btnregistrar = findViewById(R.id.btnRegistrarSB);
         imagesUri = new ArrayList<>();
 
+        // Verificar si el GPS está activado
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        if (!isGPSEnabled) {
+            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("El GPS no está activado. Por favor, actívalo para usar esta función.")
+                    .setCancelable(false)
+                    .setPositiveButton("Configuración", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            mostrarMensajeActivarGPS();
+                        }
+                    });
+
+            android.app.AlertDialog alert = alertDialogBuilder.create();
+            alert.show();
+        } else {
+            // Guardar la ubicación en Firebase
+            // Aquí puedes poner tu código para guardar la ubicación en Firebase
+        }
+
+
         getLocalizacion();
         checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
         btnregistrar.setOnClickListener(new View.OnClickListener() {
@@ -195,6 +225,29 @@ public class AtencionActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
     }
+
+    //////////////////////////////////////////////////////
+    private void mostrarMensajeActivarGPS() {
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Para guardar la ubicación, es necesario activar el GPS. ¿Deseas activarlo ahora?")
+                .setCancelable(false)
+                .setPositiveButton("Configuración", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        // Aquí puedes realizar alguna acción adicional si el usuario ha cancelado nuevamente
+                    }
+                });
+
+        android.app.AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+    /////////////////////////////////////////////////////////////////////////
     private void dispatchTakePictureIntent() throws IOException {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent

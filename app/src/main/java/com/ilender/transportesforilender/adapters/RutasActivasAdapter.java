@@ -66,8 +66,12 @@ public class RutasActivasAdapter extends RecyclerView.Adapter<RutasActivasAdapte
         }
 
         if(ruta.getEstado().equals("P")){
+            holder.btnLlegada.setEnabled(false);
+            holder.btnAtendido.setEnabled(false);
+            holder.btnFinalizar.setEnabled(false);
         }else if(ruta.getEstado().equals("I")){
             holder.btnIniciar.setEnabled(false);
+            holder.btnAtendido.setEnabled(false);
         }else if(ruta.getEstado().equals("S")){
             holder.btnIniciar.setEnabled(false);
             holder.btnLlegada.setEnabled(false);
