@@ -114,6 +114,12 @@ public class MainActivity extends AppCompatActivity {
                     nav_Menu.findItem(R.id.nav_vehiculo).setVisible(false);
                     nav_Menu.findItem(R.id.nav_reporte).setVisible(false);
                     tipoUsuario.setText("Tipo: Transporte");
+                }else if(tipo.equals("auxiliar")){
+                    nav_Menu.findItem(R.id.nav_rutas_chofer).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_cliente).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_ruta).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_reporte).setVisible(false);
+                    tipoUsuario.setText("Tipo: Auxiliar");
                 }else{
                     nav_Menu.findItem(R.id.nav_rutas_chofer).setVisible(false);
                     tipoUsuario.setText("Tipo: Asistente");
