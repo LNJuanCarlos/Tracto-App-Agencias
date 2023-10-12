@@ -50,14 +50,14 @@
                         android:layout_marginStart="5dp"
                         android:text="Nombres:"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"/>
                     <TextView
                         android:id="@+id/txtNombresChofer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#000000"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:text=""/>
 
                 </LinearLayout>
@@ -74,7 +74,7 @@
                         android:layout_marginStart="5dp"
                         android:text="Licencia:"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -82,7 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#000000"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:text=""/>
 
                 </LinearLayout>
@@ -99,7 +99,7 @@
                         android:layout_marginStart="5dp"
                         android:text="Transporte:"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -107,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:text=""/>
 
                 </LinearLayout>
@@ -124,7 +124,7 @@
                         android:layout_marginStart="5dp"
                         android:text="Tipo:"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -132,7 +132,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#000000"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:text=""/>
 
 
@@ -153,7 +153,7 @@
                             android:layout_marginStart="5dp"
                             android:text="Teléfono:"
                             android:textColor="@color/black"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -165,7 +165,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#000000"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             android:text=""
                             app:layout_constraintBottom_toBottomOf="@id/textView27"
                             app:layout_constraintStart_toEndOf="@id/textView27"

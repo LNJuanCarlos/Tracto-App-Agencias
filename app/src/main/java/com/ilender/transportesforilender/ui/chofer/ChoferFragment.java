@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -41,6 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class ChoferFragment extends Fragment {
@@ -58,6 +63,12 @@ public class ChoferFragment extends Fragment {
     LinearLayoutManager lm;
     final private int REQUEST_CODE_ASK_PERMISSION=111;
 
+    private EditText edtTermino;
+
+    private Button btnBuscar;
+
+    private CheckBox checkBox;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentChoferBinding.inflate(inflater,container,false);
@@ -71,6 +82,57 @@ public class ChoferFragment extends Fragment {
         btnConsultarDispo = root.findViewById(R.id.btnConsultarDisponibilidadChofer);
         mRecyclerView.setLayoutManager(lm);
         spTipoChofer = root.findViewById(R.id.spTipoChofer);
+        edtTermino = root.findViewById(R.id.edtTermino);
+        btnBuscar = root.findViewById(R.id.btnBuscar);
+        checkBox = root.findViewById(R.id.checkBox);
+        checkBox.setChecked(true);
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                // Habilitar o deshabilitar el Spinner y el EditText según el estado del CheckBox
+                spTipoChofer.setEnabled(checkBox.isChecked());
+                btnConsultarDispo.setEnabled(checkBox.isChecked());
+                edtTermino.setEnabled(!checkBox.isChecked());
+                btnBuscar.setEnabled(!checkBox.isChecked());
+            }
+        });
+
+
+        edtTermino.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String searchTerm = charSequence.toString();
+                searchDatabase(searchTerm);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        btnBuscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkBox.isChecked()) {
+                    // Realizar la búsqueda utilizando el valor seleccionado del Spinner
+                    String searchTerm = spTipoChofer.getSelectedItem().toString();
+                    searchDatabase(searchTerm);
+                } else {
+                    // Realizar la búsqueda utilizando el valor ingresado en el EditText
+                    String searchTerm = edtTermino.getText().toString();
+                    searchDatabase(searchTerm);
+                }
+            }
+        });
+
+
+
         spTipoChofer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -100,6 +162,29 @@ public class ChoferFragment extends Fragment {
         listarTransportistas();
         SolicitarPermiso();
         return root;
+    }
+
+    private void searchDatabase(String searchTerm) {
+        Query query = mDatabaseRef.orderByChild("nombres").equalTo(searchTerm);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Choferes> lstChoferes = new ArrayList<>();
+
+                for(DataSnapshot postSnapshot : snapshot.getChildren()){
+                    Choferes chofer = postSnapshot.getValue(Choferes.class);
+                    chofer.setIdChofer(postSnapshot.getKey());
+                    lstChoferes.add(chofer);
+                }
+                choferAdapter = new ChoferAdapter(root.getContext(), lstChoferes, fechaDisponibilidad.getText().toString());
+                mRecyclerView.setAdapter(choferAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
