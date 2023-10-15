@@ -60,6 +60,11 @@ public class ChoferAdapter extends RecyclerView.Adapter<ChoferAdapter.ChoferView
         this.fecha=fecha;
     }
 
+    public void updateData(List<Choferes> newChoferesList) {
+        this.listChoferes = newChoferesList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ChoferAdapter.ChoferViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

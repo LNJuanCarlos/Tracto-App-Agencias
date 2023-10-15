@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +24,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ilender.transportesforilender.R;
 import com.ilender.transportesforilender.adapters.VehiculoAdapter;
 import com.ilender.transportesforilender.databinding.FragmentVehiculoBinding;
+import com.ilender.transportesforilender.model.Choferes;
 import com.ilender.transportesforilender.model.Vehiculos;
 
 import java.text.SimpleDateFormat;
@@ -48,6 +53,9 @@ public class VehiculoFragment extends Fragment {
 
     LinearLayoutManager lm;
 
+    private EditText edtTerminoVehiculoPlaca;
+    private Button btnBuscarVehiculoPlaca;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,8 +69,37 @@ public class VehiculoFragment extends Fragment {
         lm = new LinearLayoutManager(root.getContext());
         mRecyclerView.setLayoutManager(lm);
         //spTipoVehiculo = root.findViewById(R.id.spTipoC)
+        edtTerminoVehiculoPlaca = root.findViewById(R.id.edtTerminoVehiculoPlaca);
+        btnBuscarVehiculoPlaca = root.findViewById(R.id.btnBuscarVehiculoPlaca);
 
         btnConsultarDispo = root.findViewById(R.id.btnConsultarDisponibilidadVehiculo);
+
+        edtTerminoVehiculoPlaca.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                String searchTerm = s.toString();
+                searchDatabase(searchTerm);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        btnBuscarVehiculoPlaca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Realizar la búsqueda utilizando el valor ingresado en el EditText
+                String searchTerm = edtTerminoVehiculoPlaca.getText().toString();
+                searchDatabase(searchTerm);
+            }
+        });
 
         fechaDisponibilidad.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +115,34 @@ public class VehiculoFragment extends Fragment {
         });
         listarVehiculos();
         return root;
+    }
+
+    private void searchDatabase(String searchTerm) {
+        Query query = mDatabaseRef.orderByChild("placa");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Vehiculos> lstVehiculos = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Vehiculos vehi = postSnapshot.getValue(Vehiculos.class);
+                    vehi.setIdVehiculos(postSnapshot.getKey());
+
+                    // Realiza una búsqueda flexible en la aplicación Android
+                    if (vehi.getPlaca().toLowerCase().contains(searchTerm.toLowerCase())) {
+                        lstVehiculos.add(vehi);
+                    }
+                }
+
+                // Actualiza los datos en el adaptador en lugar de crear uno nuevo.
+                vehiculoAdapter.updateDataVehiculo(lstVehiculos);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Manejo de errores, si es necesario.
+            }
+        });
     }
 
     @Override

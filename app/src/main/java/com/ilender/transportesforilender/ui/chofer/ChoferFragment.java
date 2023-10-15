@@ -165,24 +165,29 @@ public class ChoferFragment extends Fragment {
     }
 
     private void searchDatabase(String searchTerm) {
-        Query query = mDatabaseRef.orderByChild("nombres").equalTo(searchTerm);
+        Query query = mDatabaseRef.orderByChild("nombres");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<Choferes> lstChoferes = new ArrayList<>();
 
-                for(DataSnapshot postSnapshot : snapshot.getChildren()){
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Choferes chofer = postSnapshot.getValue(Choferes.class);
                     chofer.setIdChofer(postSnapshot.getKey());
-                    lstChoferes.add(chofer);
+
+                    // Realiza una búsqueda flexible en la aplicación Android
+                    if (chofer.getNombres().toLowerCase().contains(searchTerm.toLowerCase())) {
+                        lstChoferes.add(chofer);
+                    }
                 }
-                choferAdapter = new ChoferAdapter(root.getContext(), lstChoferes, fechaDisponibilidad.getText().toString());
-                mRecyclerView.setAdapter(choferAdapter);
+
+                // Actualiza los datos en el adaptador en lugar de crear uno nuevo.
+                choferAdapter.updateData(lstChoferes);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Manejo de errores, si es necesario.
             }
         });
     }

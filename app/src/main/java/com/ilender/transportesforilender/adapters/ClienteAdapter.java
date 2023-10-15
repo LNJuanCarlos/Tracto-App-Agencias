@@ -41,6 +41,7 @@ import com.google.firebase.database.collection.LLRBNode;
 
 import com.ilender.transportesforilender.R;
 import com.ilender.transportesforilender.activitys.DireccionClientesActivity;
+import com.ilender.transportesforilender.model.Choferes;
 import com.ilender.transportesforilender.model.Clientes;
 import com.ilender.transportesforilender.model.Direccion;
 
@@ -62,6 +63,10 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ClienteV
         this.listClientes=listClientes;
     }
 
+    public void updateDataCliente(List<Clientes> newlistClientes) {
+        this.listClientes = newlistClientes;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override

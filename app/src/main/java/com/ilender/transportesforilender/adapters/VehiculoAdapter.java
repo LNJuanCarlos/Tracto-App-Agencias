@@ -50,6 +50,11 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
         this.fecha=fecha;
     }
 
+    public void updateDataVehiculo(List<Vehiculos> newVehiculoList) {
+        this.listVehiculos = newVehiculoList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public VehiculoAdapter.VehiculoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
