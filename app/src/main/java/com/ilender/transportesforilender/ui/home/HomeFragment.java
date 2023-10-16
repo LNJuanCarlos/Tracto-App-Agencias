@@ -89,7 +89,7 @@ public class HomeFragment extends Fragment {
                                 Ruta ruta = ds.getValue(Ruta.class);
                                 if(ruta.getEstado().equals("P") && ruta.getChofer().equals(usuarioObtenido.getChofer())){
                                     contadorPendientes+=1;
-                                }else if(ruta.getEstado().equals("F") && ruta.getChofer().equals(usuarioObtenido.getChofer())){
+                                }else if(ruta.getEstado().equals("A") && ruta.getChofer().equals(usuarioObtenido.getChofer())){
                                     contadorFinalizadas+=1;
                                 }
                             }
@@ -185,7 +185,7 @@ public class HomeFragment extends Fragment {
                     Ruta ruta = ds.getValue(Ruta.class);
                     if(ruta.getEstado().equals("P")){
                         contadorPendientes+=1;
-                    }else if(ruta.getEstado().equals("F")){
+                    }else if(ruta.getEstado().equals("A")){
                         contadorFinalizadas+=1;
                     }
                 }
