@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10px"
         android:text="@string/bienvenidostring"
-        android:textColor="@color/black"
+        android:textColor="#253EE3"
         android:textSize="22sp"
         android:textStyle="bold"
         android:fontFamily="@font/youngserifregular"
