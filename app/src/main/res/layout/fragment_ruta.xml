@@ -111,7 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginLeft="16dp"
-            android:dropDownWidth="match_parent"
+            android:dropDownWidth="300dp"
             android:scrollbarSize="6dp"
             tools:layout_editor_absoluteX="194dp"
             tools:layout_editor_absoluteY="110dp"/>
