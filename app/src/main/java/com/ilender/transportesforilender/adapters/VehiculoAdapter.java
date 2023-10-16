@@ -30,6 +30,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ilender.transportesforilender.R;
 import com.ilender.transportesforilender.model.Choferes;
+import com.ilender.transportesforilender.model.Transportistas;
 import com.ilender.transportesforilender.model.Vehiculochofer;
 import com.ilender.transportesforilender.model.Vehiculos;
 
@@ -69,8 +70,27 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
         holder.marcaVehiculo.setText(vehiculos.getMarca());
         holder.placaVehiculo.setText(vehiculos.getPlaca());
         holder.id = vehiculos.getIdVehiculos();
+        holder.textotransportista = vehiculos.getTransportista();
 
+        if(vehiculos.getTipo().equals("I")){
+            holder.tipoVehiculo.setText("INTERNO");
+        }else{
+            holder.tipoVehiculo.setText("EXTERNO");
+        }
 
+        Query mRefTrans = FirebaseDatabase.getInstance().getReference().child("Transportistas").child(vehiculos.getTransportista());
+        mRefTrans.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Transportistas transportista = snapshot.getValue(Transportistas.class);
+                holder.transportista.setText(transportista.getNombre());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
 
@@ -140,7 +160,7 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
 
     public class VehiculoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public TextView estadoVehiculo, marcaVehiculo, placaVehiculo,choferVehiculo;
+        public TextView estadoVehiculo, marcaVehiculo, placaVehiculo,choferVehiculo, tipoVehiculo, transportista;
         public Button btnAsignarVehiculo, btnGrabar;
 
         public View layoutVehiculoVehiculo;
@@ -155,6 +175,8 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
 
         public String idChofer;
 
+        public String tipo, textotransportista;
+
         public VehiculoViewHolder(@NonNull View itemView){
             super(itemView);
 
@@ -168,6 +190,8 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
             edtFechaAsignarChofer=itemView.findViewById(R.id.edtFechaAsignarChofer);
             spChofer=itemView.findViewById(R.id.spChoferVehiculo);
             btnGrabar=itemView.findViewById(R.id.btnGrabarAsignarChofer);
+            tipoVehiculo = itemView.findViewById(R.id.txtTipoVehiculo);
+            transportista = itemView.findViewById(R.id.txtTransportistaVehi);
         }
 
         void setOnClickListeners(){
@@ -181,8 +205,9 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
                         layoutOcultoAsignarChofer.setVisibility(View.VISIBLE);
 
                         DatabaseReference choferes = FirebaseDatabase.getInstance().getReference().child("Choferes");
+                        Query choferesFiltro = choferes.orderByChild("transportista").equalTo(textotransportista);
 
-                        choferes.addValueEventListener(new ValueEventListener() {
+                        choferesFiltro.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 ArrayList<Choferes> al = new ArrayList<>();

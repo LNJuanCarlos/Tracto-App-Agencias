@@ -6,6 +6,10 @@ public class Vehiculos {
     private String marca;
     private String placa;
 
+    private String tipo;
+
+    private String transportista;
+
     public Vehiculos(){
 
     }
@@ -13,6 +17,35 @@ public class Vehiculos {
     public Vehiculos(String marca, String placa) {
         this.marca = marca;
         this.placa = placa;
+    }
+
+    public Vehiculos(String marca, String placa, String tipo) {
+        this.marca = marca;
+        this.placa = placa;
+        this.tipo = tipo;
+    }
+
+    public Vehiculos(String marca, String placa, String tipo, String transportista) {
+        this.marca = marca;
+        this.placa = placa;
+        this.tipo = tipo;
+        this.transportista = transportista;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getTransportista() {
+        return transportista;
+    }
+
+    public void setTransportista(String transportista) {
+        this.transportista = transportista;
     }
 
     public String getIdVehiculos() {

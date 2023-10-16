@@ -15,6 +15,8 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -30,6 +32,7 @@ import com.ilender.transportesforilender.R;
 import com.ilender.transportesforilender.adapters.VehiculoAdapter;
 import com.ilender.transportesforilender.databinding.FragmentVehiculoBinding;
 import com.ilender.transportesforilender.model.Choferes;
+import com.ilender.transportesforilender.model.Transportistas;
 import com.ilender.transportesforilender.model.Vehiculos;
 
 import java.text.SimpleDateFormat;
@@ -68,9 +71,23 @@ public class VehiculoFragment extends Fragment {
         mRecyclerView = root.findViewById(R.id.rcvVehiculos);
         lm = new LinearLayoutManager(root.getContext());
         mRecyclerView.setLayoutManager(lm);
-        //spTipoVehiculo = root.findViewById(R.id.spTipoC)
+        spTipoVehiculo = root.findViewById(R.id.spTipoVehiculo);
         edtTerminoVehiculoPlaca = root.findViewById(R.id.edtTerminoVehiculoPlaca);
         btnBuscarVehiculoPlaca = root.findViewById(R.id.btnBuscarVehiculoPlaca);
+
+
+        spTipoVehiculo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Transportistas a = (Transportistas)parent.getItemAtPosition(position);
+                idTransportista=a.getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         btnConsultarDispo = root.findViewById(R.id.btnConsultarDisponibilidadVehiculo);
 
@@ -114,6 +131,7 @@ public class VehiculoFragment extends Fragment {
             }
         });
         listarVehiculos();
+        listarTransportistas();
         return root;
     }
 
@@ -151,6 +169,31 @@ public class VehiculoFragment extends Fragment {
         binding = null;
     }
 
+    private void listarTransportistas(){
+        DatabaseReference mTransportistas = FirebaseDatabase.getInstance().getReference().child("Transportistas");
+        mTransportistas.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Transportistas> lstTransportistas = new ArrayList<>();
+
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Transportistas transportista = ds.getValue(Transportistas.class);
+                    transportista.setId(ds.getKey());
+                    lstTransportistas.add(transportista);
+                }
+
+                ArrayAdapter<Transportistas> adapter = new ArrayAdapter<Transportistas>(root.getContext(),androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, lstTransportistas);
+                adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+                spTipoVehiculo.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void CargarFecha() {
         Calendar calendar = Calendar.getInstance();
         int YEAR = calendar.get(Calendar.YEAR);
@@ -172,7 +215,7 @@ public class VehiculoFragment extends Fragment {
     }
     private void listarVehiculos(){
         String strDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
-
+        fechaDisponibilidad.setText(strDate);
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -194,7 +237,10 @@ public class VehiculoFragment extends Fragment {
         });
     }
     private void consultarDisponibilidad(){
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+
+        Query filtro = mDatabaseRef.orderByChild("transportista").equalTo(idTransportista);
+
+        filtro.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<Vehiculos> lstVehiculos = new ArrayList<>();
