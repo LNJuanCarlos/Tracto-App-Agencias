@@ -29,6 +29,7 @@ import com.ilender.transportesforilender.R;
 import com.ilender.transportesforilender.databinding.ActivityMainBinding;
 import com.ilender.transportesforilender.model.Usuarios;
 import com.ilender.transportesforilender.providers.AuthProvider;
+import com.ilender.transportesforilender.providers.TokkenProvider;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private String usuario;
 
     private String tipo;
+    TokkenProvider mTokenProvider;
 
     @Override
     protected void onDestroy(){
@@ -75,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
         header = navigationView.getHeaderView(0);
         setSupportActionBar(binding.appBarMain.toolbar);
+        mTokenProvider = new TokkenProvider();
+
+        createToken();
         notificaciones();
 //        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -131,6 +136,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void createToken(){
+        mTokenProvider.create(mAuthProvider.getUid());
     }
 
     private void notificaciones() {
