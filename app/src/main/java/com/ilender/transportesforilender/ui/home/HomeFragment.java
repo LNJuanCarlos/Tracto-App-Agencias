@@ -181,16 +181,25 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int contadorFinalizadas = 0;
                 int contadorPendientes = 0;
+                int contadorEnCurso = 0;
+                int contadorLlegada = 0;
+
                 for(DataSnapshot ds: snapshot.getChildren()){
                     Ruta ruta = ds.getValue(Ruta.class);
                     if(ruta.getEstado().equals("P")){
                         contadorPendientes+=1;
                     }else if(ruta.getEstado().equals("A")){
                         contadorFinalizadas+=1;
+                    }else if(ruta.getEstado().equals("I")){
+                        contadorEnCurso+=1;
+                    }else if (ruta.getEstado().equals("S")) {
+                        contadorLlegada+=1;
                     }
                 }
                 rutasPendientes.setText(String.valueOf(contadorPendientes));
                 rutasFinalizadas.setText(String.valueOf(contadorFinalizadas));
+                vehiculoTop.setText(String.valueOf(contadorEnCurso));
+                choferTop.setText(String.valueOf(contadorLlegada));
             }
 
             @Override
@@ -267,33 +276,33 @@ public class HomeFragment extends Fragment {
                     }
                 }
 
-                DatabaseReference chofer = FirebaseDatabase.getInstance().getReference().child("Choferes").child(elementoMasRepetido);
-                chofer.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Choferes chofer = snapshot.getValue(Choferes.class);
-                        choferTop.setText(chofer.getNombres());
-                    }
+//                DatabaseReference chofer = FirebaseDatabase.getInstance().getReference().child("Choferes").child(elementoMasRepetido);
+//                chofer.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        Choferes chofer = snapshot.getValue(Choferes.class);
+//                        choferTop.setText(chofer.getNombres());
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-                DatabaseReference vehiculo = FirebaseDatabase.getInstance().getReference().child("Vehiculos").child(elementoMasRepetido2);
-                vehiculo.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Vehiculos vehiculo = snapshot.getValue(Vehiculos.class);
-                        vehiculoTop.setText(vehiculo.getMarca()+" - "+vehiculo.getPlaca());
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+//                DatabaseReference vehiculo = FirebaseDatabase.getInstance().getReference().child("Vehiculos").child(elementoMasRepetido2);
+//                vehiculo.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        Vehiculos vehiculo = snapshot.getValue(Vehiculos.class);
+//                        vehiculoTop.setText(vehiculo.getMarca()+" - "+vehiculo.getPlaca());
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
 
                 rutasDelMes.setText(String.valueOf(contadorTotal));
 

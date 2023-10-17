@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10px"
         android:text="@string/bienvenidostring"
-        android:textColor="#253EE3"
+        android:textColor="#9DAAF1"
         android:textSize="22sp"
         android:textStyle="bold"
         android:fontFamily="@font/youngserifregular"
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="@string/rutas_finalizadas_de_hoy"
+                    android:text="RUTAS TERMINADAS DEL DIA"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
@@ -114,7 +114,7 @@
                     android:layout_height="64dp"
                     android:background="@drawable/pendientes"
                     android:backgroundTint="#FF9800"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:src="@drawable/pendientes"/>
 
                 <TextView
@@ -177,10 +177,10 @@
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:background="@drawable/transportemasutilizado"
-                    android:backgroundTint="#2196F3"
+                    android:background="@drawable/carcurso"
+                    android:backgroundTint="#687B8A"
                     android:padding="10dp"
-                    android:src="@drawable/transportemasutilizado"/>
+                    android:src="@drawable/carcurso"/>
 
                 <TextView
                     android:id="@+id/txtTransporteTopDelMes"
@@ -189,7 +189,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="@string/sin_data"
-                    android:textSize="16sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"/>
 
                 <View
@@ -203,7 +203,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="@string/top_vehiculo_del_mes"
+                    android:text="RUTAS EN CURSO"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
@@ -228,10 +228,10 @@
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:background="@drawable/chofermayorrutas"
-                    android:backgroundTint="#FF9800"
-                    android:padding="10dp"
-                    android:src="@drawable/chofermayorrutas"/>
+                    android:background="@drawable/carubicacion"
+                    android:backgroundTint="#4EF321"
+                    android:padding="8dp"
+                    android:src="@drawable/carubicacion"/>
 
                 <TextView
                     android:id="@+id/txtChoferTopDelMes"
@@ -240,7 +240,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="@string/sin_data"
-                    android:textSize="16sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"/>
 
                 <View
@@ -254,7 +254,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="@string/top_chofer_del_mes"
+                    android:text="LLEGO A CLIENTE"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
