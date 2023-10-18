@@ -13,6 +13,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,8 +28,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -39,6 +42,7 @@ import com.ilender.transportesforilender.activitys.AsignarRutasActivity;
 import com.ilender.transportesforilender.model.Choferes;
 import com.ilender.transportesforilender.model.Ruta;
 import com.ilender.transportesforilender.model.Transportistas;
+import com.ilender.transportesforilender.model.Usuarios;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +57,9 @@ public class ChoferAdapter extends RecyclerView.Adapter<ChoferAdapter.ChoferView
     private final static int SETTINGS_REQUEST_CODE = 2;
     private RutaAdapter rutaAdapter;
     LinearLayoutManager lm;
+    private DatabaseReference mDatabaseRef;
+    private String usuario;
+    private String tipousuario;
 
     public ChoferAdapter(Context con, List<Choferes> listChoferes, String fecha){
         this.context=con;
@@ -89,6 +96,28 @@ public class ChoferAdapter extends RecyclerView.Adapter<ChoferAdapter.ChoferView
         }else{
             holder.tipoChofer.setText("EXTERNO");
         }
+
+        usuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(usuario);
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Usuarios usuarioObtenido = snapshot.getValue(Usuarios.class);
+                tipousuario = usuarioObtenido.getTipo();
+
+                if(tipousuario != null && tipousuario.equals("auxiliar")){
+                    holder.layoutTelefonoChoferes.setVisibility(View.GONE);
+                }else{
+                    holder.layoutTelefonoChoferes.setVisibility(View.VISIBLE);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         Query mRefTrans = FirebaseDatabase.getInstance().getReference().child("Transportistas").child(chofer.getTransportista());
         mRefTrans.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -149,7 +178,7 @@ public class ChoferAdapter extends RecyclerView.Adapter<ChoferAdapter.ChoferView
         public Button btnAsignarRuta, btnVisualizarRutas;
         public ImageButton llamarChofer;
         public String id, telefonoChoferllamada;
-        public LinearLayout layouOcultoRutasChofer;
+        public LinearLayout layouOcultoRutasChofer,layoutTelefonoChoferes;
         public RecyclerView rcvRutasChofer;
         public String tipo;
 
@@ -167,6 +196,7 @@ public class ChoferAdapter extends RecyclerView.Adapter<ChoferAdapter.ChoferView
             tipoChofer = itemView.findViewById(R.id.txtTipoChofer);
             llamarChofer = itemView.findViewById(R.id.imgBtnllamarChofer);
             transportista = itemView.findViewById(R.id.txtTransportistaChofer);
+            layoutTelefonoChoferes = itemView.findViewById(R.id.layoutTelefonoChoferes);
         }
 
         void setOnClickListeners(){

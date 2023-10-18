@@ -150,6 +150,10 @@ public class HomeFragment extends Fragment {
                     layoutCH1.setVisibility(View.VISIBLE);
                     layoutCH2.setVisibility(View.VISIBLE);
                     layoutCH3.setVisibility(View.VISIBLE);
+                }else if (tipo.equals("auxiliar")){
+
+                    layoutadm2.setVisibility(View.VISIBLE);
+                    layoutadm3.setVisibility(View.VISIBLE);
                 }else{
                     layoutadm1.setVisibility(View.VISIBLE);
                     layoutadm2.setVisibility(View.VISIBLE);
