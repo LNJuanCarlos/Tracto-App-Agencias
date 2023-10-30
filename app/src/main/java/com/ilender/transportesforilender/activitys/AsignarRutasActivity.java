@@ -271,7 +271,9 @@ public class AsignarRutasActivity extends AppCompatActivity {
                 if(idRutaIntent!=null){
                     saveImage(idRutaIntent);
                     Toast.makeText(AsignarRutasActivity.this, "Se ha grabado correctamente la información!", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(AsignarRutasActivity.this, ChoferFragment.class);
+                    //Intent i = new Intent(AsignarRutasActivity.this, ChoferFragment.class);
+                    Intent intent = new Intent(AsignarRutasActivity.this, AnimacionCheckActivity.class);
+                    startActivity(intent);
                     onBackPressed();
                 }else{
                     if(idChofer.equals("")||idDireccion.equals("")||fechaDisponibilidad.getText().toString().equals("")||idVehiculo.equals("")){
@@ -286,7 +288,9 @@ public class AsignarRutasActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 saveImage(idRuta);
                                 Toast.makeText(AsignarRutasActivity.this, "Se ha grabado correctamente la información!", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(AsignarRutasActivity.this,ChoferFragment.class);
+                                //Intent i = new Intent(AsignarRutasActivity.this,ChoferFragment.class);
+                                Intent intent = new Intent(AsignarRutasActivity.this, AnimacionCheckActivity.class);
+                                startActivity(intent);
                                 onBackPressed();
                             }
                         });

@@ -2,6 +2,7 @@ package com.ilender.transportesforilender.adapters;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ilender.transportesforilender.R;
+import com.ilender.transportesforilender.activitys.AnimacionCheckActivity;
 import com.ilender.transportesforilender.model.Choferes;
 import com.ilender.transportesforilender.model.Transportistas;
 import com.ilender.transportesforilender.model.Vehiculochofer;
@@ -274,6 +276,8 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 Toast.makeText(context, "Se ha grabado correctamente!", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(context, AnimacionCheckActivity.class);
+                                context.startActivity(i);
                                 layoutOcultoAsignarChofer.setVisibility(View.GONE);
                             }
                         });
