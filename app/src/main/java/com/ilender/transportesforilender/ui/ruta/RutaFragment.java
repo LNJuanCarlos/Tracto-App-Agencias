@@ -19,6 +19,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +46,7 @@ import java.util.Locale;
 
 public class RutaFragment extends Fragment {
 
+    private AdView mAdView3;
     private FragmentRutaBinding binding;
     private View root;
     private RutaTrayectoriaAdapter rutaAdapter;
@@ -81,6 +87,18 @@ public class RutaFragment extends Fragment {
         lm = new LinearLayoutManager(root.getContext());
         btnConsultarDispo = root.findViewById(R.id.btnConsultarTrayectoria);
         mRecyclerView.setLayoutManager(lm);
+
+        MobileAds.initialize(getContext());
+
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdView3 = root.findViewById(R.id.adView3);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView3.loadAd(adRequest);
 
         fechaDisponibilidad.setOnClickListener(new View.OnClickListener() {
             @Override

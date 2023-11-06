@@ -7,24 +7,38 @@
     xmlns:map="http://schemas.android.com/apk/res-auto"
     tools:context=".activitys.IniciarActivity">
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-6998240309441304/7692120358"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+    </com.google.android.gms.ads.AdView>
+
     <TextView
         android:id="@+id/txt56"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="INICIO DE RUTA"
         android:textSize="24sp"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/adView5"/>
 
     <fragment
         android:id="@+id/mapdriver"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="fill_parent"
         android:layout_height="300dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

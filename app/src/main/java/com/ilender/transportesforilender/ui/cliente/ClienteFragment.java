@@ -20,6 +20,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +44,7 @@ import java.util.ArrayList;
 
 public class ClienteFragment extends Fragment {
 
+    private AdView mAdView7;
     private FragmentClienteBinding binding;
     private RecyclerView mRecyclerView;
     private ClienteAdapter clienteAdapter;
@@ -63,6 +69,18 @@ public class ClienteFragment extends Fragment {
         mRecyclerView.setLayoutManager(lm);
         edtTerminoCliente = root.findViewById(R.id.edtTerminoCliente);
         btnBuscarCliente = root.findViewById(R.id.btnBuscarCliente);
+
+        MobileAds.initialize(getContext());
+
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdView7 = root.findViewById(R.id.adView7);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView7.loadAd(adRequest);
 
         edtTerminoCliente.addTextChangedListener(new TextWatcher() {
             @Override

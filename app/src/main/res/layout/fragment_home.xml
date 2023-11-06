@@ -10,12 +10,26 @@
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/logoilender"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/todo" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-6998240309441304/5076445743"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" >
+
+    </com.google.android.gms.ads.AdView>
 
     <TextView
         android:id="@+id/textView5"
@@ -27,16 +41,16 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:fontFamily="@font/youngserifregular"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintEnd_toEndOf="@+id/adView"
+        app:layout_constraintStart_toStartOf="@+id/adView"
+        app:layout_constraintTop_toBottomOf="@+id/adView" />
 
     <LinearLayout
         android:id="@+id/layoutADM3"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="6dp"
         android:clipToPadding="false"
         android:gravity="center"
         android:orientation="horizontal"
@@ -152,7 +166,7 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="6dp"
         android:clipToPadding="false"
         android:gravity="center"
         android:orientation="horizontal"
@@ -269,7 +283,7 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="6dp"
         android:clipToPadding="false"
         android:gravity="center"
         android:orientation="horizontal"

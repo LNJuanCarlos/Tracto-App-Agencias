@@ -63,6 +63,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-messaging:23.2.1'
 
+    implementation 'com.google.android.gms:play-services-ads:22.4.0'
+
 
     modules {         module('org.jetbrains.kotlin:kotlin-stdlib-jdk8') {
         replacedBy 'org.jetbrains.kotlin:kotlin-stdlib', 'kotlin fixes'         }

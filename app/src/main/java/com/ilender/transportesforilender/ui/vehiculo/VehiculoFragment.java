@@ -22,6 +22,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +49,7 @@ import java.util.Locale;
 
 public class VehiculoFragment extends Fragment {
 
+    private AdView mAdView8;
     private FragmentVehiculoBinding binding;
     private RecyclerView mRecyclerView;
     private VehiculoAdapter vehiculoAdapter;
@@ -74,6 +80,18 @@ public class VehiculoFragment extends Fragment {
         spTipoVehiculo = root.findViewById(R.id.spTipoVehiculo);
         edtTerminoVehiculoPlaca = root.findViewById(R.id.edtTerminoVehiculoPlaca);
         btnBuscarVehiculoPlaca = root.findViewById(R.id.btnBuscarVehiculoPlaca);
+
+        MobileAds.initialize(getContext());
+
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdView8 = root.findViewById(R.id.adView8);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView8.loadAd(adRequest);
 
 
         spTipoVehiculo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

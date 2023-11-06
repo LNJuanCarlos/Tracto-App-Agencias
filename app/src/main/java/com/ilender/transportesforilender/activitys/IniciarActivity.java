@@ -23,6 +23,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -44,6 +49,7 @@ import java.util.Locale;
 
 public class IniciarActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    private AdView mAdView5;
     private GoogleMap mmap;
     private EditText edtKilometrajeIR, edtObservacion;
     private TextView txt56;
@@ -68,6 +74,18 @@ public class IniciarActivity extends AppCompatActivity implements OnMapReadyCall
         tipo = getIntent().getExtras().getString("tipo");
         idRuta = getIntent().getExtras().getString("idRuta");
         txt56 = findViewById(R.id.txt56);
+
+        MobileAds.initialize(this);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdView5 = findViewById(R.id.adView5);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView5.loadAd(adRequest);
 
         // Verificar si el GPS está activado
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

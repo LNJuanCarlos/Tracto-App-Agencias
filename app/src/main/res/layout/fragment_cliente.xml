@@ -10,13 +10,27 @@
         android:id="@+id/floatingActionButtonAgregarCliente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="604dp"
+        android:layout_marginTop="550dp"
         android:layout_marginEnd="16dp"
         android:clickable="true"
         android:contentDescription="Agregar Cliente"
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rcvClientes" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-6998240309441304/4156748769"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.google.android.gms.ads.AdView>
 
     <LinearLayout
         android:id="@+id/LinearCliente"
@@ -26,7 +40,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adView7"
         >
 
         <EditText

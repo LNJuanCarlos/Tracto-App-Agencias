@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.chofer.ChoferFragment">
 
-    <TextView
+   <!-- <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,21 @@
         android:layout_margin="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"/>-->
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-6998240309441304/5745410022"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+    </com.google.android.gms.ads.AdView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
@@ -28,7 +42,7 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/adView2"
         >
 
         <LinearLayout
@@ -163,7 +177,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvChoferes"
         android:layout_width="match_parent"
-        android:layout_height="640dp"
+        android:layout_height="600dp"
         android:paddingBottom="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

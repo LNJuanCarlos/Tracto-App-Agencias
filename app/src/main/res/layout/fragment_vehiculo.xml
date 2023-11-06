@@ -6,19 +6,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.vehiculo.VehiculoFragment">
 
-    <TextView
-        android:id="@+id/textView"
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="FILTRO DE VEHICULOS"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-6998240309441304/3270493760"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.google.android.gms.ads.AdView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
@@ -28,7 +28,7 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/adView8">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -156,7 +156,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvVehiculos"
             android:layout_width="match_parent"
-            android:layout_height="640dp"
+            android:layout_height="600dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linear1"

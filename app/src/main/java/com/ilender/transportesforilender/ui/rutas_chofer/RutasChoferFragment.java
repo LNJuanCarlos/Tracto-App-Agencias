@@ -12,6 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +42,7 @@ public class RutasChoferFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private AdView mAdView4;
     private View root;
     private TextView txtFecha;
     private FragmentRutasChoferBinding binding;
@@ -65,6 +71,18 @@ public class RutasChoferFragment extends Fragment {
         mRecyclerView = root.findViewById(R.id.rcvRutasActivas);
         lm = new LinearLayoutManager(root.getContext());
         mRecyclerView.setLayoutManager(lm);
+
+        MobileAds.initialize(getContext());
+
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdView4 = root.findViewById(R.id.adView4);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView4.loadAd(adRequest);
 
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

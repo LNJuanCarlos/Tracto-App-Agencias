@@ -28,6 +28,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TransportesForIlender"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-6998240309441304~7916277798"/>
+
         <activity
             android:name=".activitys.AnimacionCheckActivity"
             android:exported="false" />

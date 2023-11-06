@@ -21,6 +21,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                app:adSize="BANNER"
+                app:adUnitId="ca-app-pub-6998240309441304/6068047496"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+
+            </com.google.android.gms.ads.AdView>
+
             <TextView
                 android:id="@+id/txtView97"
                 android:layout_width="match_parent"
@@ -33,7 +47,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/adView6"/>
 
             <fragment
                 android:id="@+id/mapdriver2"

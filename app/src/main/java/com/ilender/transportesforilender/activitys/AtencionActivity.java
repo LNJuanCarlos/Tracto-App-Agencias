@@ -34,6 +34,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -60,7 +65,7 @@ import java.util.Locale;
 
 public class AtencionActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-
+    private AdView mAdView6;
     private String idRuta, strDate, tipo, Latitud, Longitud;
 
     private ArrayList<File> mImageFiles;
@@ -121,6 +126,18 @@ public class AtencionActivity extends AppCompatActivity implements OnMapReadyCal
         btnSubirImagenSB = findViewById(R.id.btnSubirImagenSB);
         btnregistrar = findViewById(R.id.btnRegistrarSB);
         imagesUri = new ArrayList<>();
+
+        MobileAds.initialize(this);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdView6 = findViewById(R.id.adView6);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView6.loadAd(adRequest);
 
         // Verificar si el GPS está activado
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

@@ -11,6 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +42,7 @@ import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
+    private AdView mAdView;
     private FragmentHomeBinding binding;
     private String strDate;
     private DatabaseReference mDatabaseRef;
@@ -67,6 +73,18 @@ public class HomeFragment extends Fragment {
         layoutCH2 = root.findViewById(R.id.layouttrans2);
         layoutCH3 = root.findViewById(R.id.layouttrans3);
         strDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+
+        MobileAds.initialize(getContext());
+
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdView = root.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         rutasDelDia();
         rutaDelMes();

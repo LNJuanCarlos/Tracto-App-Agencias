@@ -19,6 +19,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-6998240309441304/8506508578"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt145">
+
+    </com.google.android.gms.ads.AdView>
+
     <TextView
         android:id="@+id/txt142"
         android:layout_width="match_parent"
@@ -27,7 +41,7 @@
         android:text="TUS RUTAS PARA LA FECHA DE HOY"
         android:textColor="#000000"
         android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@+id/txt145"/>
+        app:layout_constraintTop_toBottomOf="@+id/adView4"/>
 
     <TextView
         android:id="@+id/txtFechaRutasActivas"
