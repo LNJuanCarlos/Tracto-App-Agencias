@@ -135,6 +135,13 @@ public class MainActivity extends AppCompatActivity {
                 } else if (tipo.equals("jefe")) {
                     nav_Menu.findItem(R.id.nav_rutas_chofer).setVisible(false);
                     tipoUsuario.setText("Tipo: Jefe de Almacen");
+                } else if (tipo.equals("pyp")) {
+                    nav_Menu.findItem(R.id.nav_chofer).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_cliente).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_vehiculo).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_reporte).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_rutas_chofer).setVisible(false);
+                    tipoUsuario.setText("Tipo: P&P");
                 } else{
                     nav_Menu.findItem(R.id.nav_rutas_chofer).setVisible(false);
                     tipoUsuario.setText("Tipo: Sistemas");
