@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>-->
 
-    <com.google.android.gms.ads.AdView
+    <!--<com.google.android.gms.ads.AdView
         android:id="@+id/adView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
 
-    </com.google.android.gms.ads.AdView>
+    </com.google.android.gms.ads.AdView>!-->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
@@ -42,8 +42,9 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adView2"
+        app:layout_constraintTop_toTopOf="parent"
         >
+        <!--app:layout_constraintTop_toTopOf="parent"!-->
 
         <LinearLayout
             android:layout_width="match_parent"

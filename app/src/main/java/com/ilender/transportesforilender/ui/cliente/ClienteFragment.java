@@ -78,9 +78,9 @@ public class ClienteFragment extends Fragment {
             }
         });
 
-        mAdView7 = root.findViewById(R.id.adView7);
+        /*mAdView7 = root.findViewById(R.id.adView7);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView7.loadAd(adRequest);
+        mAdView7.loadAd(adRequest);*/
 
         edtTerminoCliente.addTextChangedListener(new TextWatcher() {
             @Override

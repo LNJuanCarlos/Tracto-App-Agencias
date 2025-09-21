@@ -7,7 +7,7 @@
     tools:context=".ui.reporte.ReporteFragment">
 
 
-    <com.google.android.gms.ads.AdView
+    <!--<com.google.android.gms.ads.AdView
         android:id="@+id/adView9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </com.google.android.gms.ads.AdView>
+    </com.google.android.gms.ads.AdView>!-->
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -30,8 +30,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adView9"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.409" />
+    <!--app:layout_constraintTop_toBottomOf="@+id/adView9"!-->
 
     <Button
         android:id="@+id/btnGenerarReporte"

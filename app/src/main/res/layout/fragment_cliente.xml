@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rcvClientes" />
 
-    <com.google.android.gms.ads.AdView
+    <!--<com.google.android.gms.ads.AdView
         android:id="@+id/adView7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </com.google.android.gms.ads.AdView>
+    </com.google.android.gms.ads.AdView>!-->
 
     <LinearLayout
         android:id="@+id/LinearCliente"
@@ -40,8 +40,9 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adView7"
+        app:layout_constraintTop_toTopOf="parent"
         >
+        <!--app:layout_constraintTop_toBottomOf="@+id/adView7"!-->
 
         <EditText
             android:id="@+id/edtTerminoCliente"

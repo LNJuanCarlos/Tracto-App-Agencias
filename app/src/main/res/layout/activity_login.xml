@@ -14,9 +14,9 @@
         android:background="@color/white">
 
         <ImageView
-            android:layout_width="400dp"
-            android:layout_height="250dp"
-            android:src="@drawable/ilendercl"
+            android:layout_width="350dp"
+            android:layout_height="240dp"
+            android:src="@drawable/tractocamiones"
             android:layout_gravity="center"
             android:layout_marginTop="100dp"
             android:background="@color/white"/>

@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.vehiculo.VehiculoFragment">
 
-    <com.google.android.gms.ads.AdView
+    <!--<com.google.android.gms.ads.AdView
         android:id="@+id/adView8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </com.google.android.gms.ads.AdView>
+    </com.google.android.gms.ads.AdView>!-->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
@@ -28,7 +28,9 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adView8">
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <!--app:layout_constraintTop_toBottomOf="@+id/adView8"!-->
 
         <LinearLayout
             android:layout_width="match_parent"

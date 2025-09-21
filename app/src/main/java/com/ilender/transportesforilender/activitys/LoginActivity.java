@@ -53,10 +53,10 @@ public class LoginActivity extends AppCompatActivity {
 
         mButtonlogin = findViewById(R.id.btnLogin);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        /*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
-                .build();
+                .build();*/
         mAuthProvider = new AuthProvider();
 
         mButtonlogin.setOnClickListener(new View.OnClickListener() {

@@ -11,13 +11,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:src="@drawable/logoilender"
+        android:src="@drawable/tractocamiones"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/todo" />
 
-    <com.google.android.gms.ads.AdView
+    <!--<com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" >
 
-    </com.google.android.gms.ads.AdView>
+    </com.google.android.gms.ads.AdView>!-->
 
     <TextView
         android:id="@+id/textView5"
@@ -41,9 +41,9 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:fontFamily="@font/youngserifregular"
-        app:layout_constraintEnd_toEndOf="@+id/adView"
-        app:layout_constraintStart_toStartOf="@+id/adView"
-        app:layout_constraintTop_toBottomOf="@+id/adView" />
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <LinearLayout
         android:id="@+id/layoutADM3"

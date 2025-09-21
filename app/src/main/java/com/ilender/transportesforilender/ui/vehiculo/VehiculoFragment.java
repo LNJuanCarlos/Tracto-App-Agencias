@@ -89,9 +89,9 @@ public class VehiculoFragment extends Fragment {
             }
         });
 
-        mAdView8 = root.findViewById(R.id.adView8);
+        /*mAdView8 = root.findViewById(R.id.adView8);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView8.loadAd(adRequest);
+        mAdView8.loadAd(adRequest);*/
 
 
         spTipoVehiculo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -80,9 +80,9 @@ public class RutasChoferFragment extends Fragment {
             }
         });
 
-        mAdView4 = root.findViewById(R.id.adView4);
+        /*mAdView4 = root.findViewById(R.id.adView4);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView4.loadAd(adRequest);
+        mAdView4.loadAd(adRequest);*/
 
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -109,9 +109,9 @@ public class ReporteFragment extends Fragment {
             }
         });
 
-        mAdView9 = root.findViewById(R.id.adView9);
+        /*mAdView9 = root.findViewById(R.id.adView9);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView9.loadAd(adRequest);
+        mAdView9.loadAd(adRequest);*/
 
         btnGenerarReporte.setOnClickListener(new View.OnClickListener() {
             @Override

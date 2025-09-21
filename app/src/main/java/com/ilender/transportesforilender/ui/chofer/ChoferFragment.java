@@ -101,9 +101,9 @@ public class ChoferFragment extends Fragment {
             }
         });
 
-        mAdView2 = root.findViewById(R.id.adView2);
+        /*mAdView2 = root.findViewById(R.id.adView2);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView2.loadAd(adRequest);
+        mAdView2.loadAd(adRequest);*/
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

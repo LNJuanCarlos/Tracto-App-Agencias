@@ -96,9 +96,9 @@ public class RutaFragment extends Fragment {
             }
         });
 
-        mAdView3 = root.findViewById(R.id.adView3);
+        /*mAdView3 = root.findViewById(R.id.adView3);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView3.loadAd(adRequest);
+        mAdView3.loadAd(adRequest);*/
 
         fechaDisponibilidad.setOnClickListener(new View.OnClickListener() {
             @Override
