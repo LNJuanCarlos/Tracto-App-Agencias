@@ -4,21 +4,49 @@ public class Ruta {
 
     private String idRuta;
     private String chofer;
-    private String direccion;
+    private String vehiculo;
     private String estado;
     private String fecha;
-    private String vehiculo;
+
+    // Mantengo el campo direccion para compatibilidad
+    private String direccion;
+
+    // Nuevo campo para diferenciar el destino
+    private String tipoEntrega; // "AGENCIA" o "DELIVERY"
+
+    // Si es agencia
+    private String agencia; // nombre o id de la agencia
+
+    // Si es delivery
+    private String cliente; // nombre o id del cliente
+    private String direccionCliente;
 
     public Ruta(){
 
     }
 
-    public Ruta(String chofer, String direccion, String estado, String fecha, String vehiculo) {
+
+    // Constructor para Delivery
+    public Ruta(String chofer, String vehiculo, String estado, String fecha, String cliente, String direccionCliente) {
         this.chofer = chofer;
-        this.direccion = direccion;
+        this.vehiculo = vehiculo;
         this.estado = estado;
         this.fecha = fecha;
+        this.tipoEntrega = "DELIVERY";
+        this.cliente = cliente;
+        this.direccionCliente = direccionCliente;
+        this.direccion = direccionCliente; // compatibilidad con tu campo actual
+    }
+
+    // Constructor para Agencia
+    public Ruta(String chofer, String vehiculo, String estado, String fecha, String agencia) {
+        this.chofer = chofer;
         this.vehiculo = vehiculo;
+        this.estado = estado;
+        this.fecha = fecha;
+        this.tipoEntrega = "AGENCIA";
+        this.agencia = agencia;
+        this.direccion = agencia; // compatibilidad con tu campo actual
     }
 
     public String getIdRuta() {
@@ -37,12 +65,12 @@ public class Ruta {
         this.chofer = chofer;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getVehiculo() {
+        return vehiculo;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setVehiculo(String vehiculo) {
+        this.vehiculo = vehiculo;
     }
 
     public String getEstado() {
@@ -61,11 +89,43 @@ public class Ruta {
         this.fecha = fecha;
     }
 
-    public String getVehiculo() {
-        return vehiculo;
+    public String getDireccion() {
+        return direccion;
     }
 
-    public void setVehiculo(String vehiculo) {
-        this.vehiculo = vehiculo;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTipoEntrega() {
+        return tipoEntrega;
+    }
+
+    public void setTipoEntrega(String tipoEntrega) {
+        this.tipoEntrega = tipoEntrega;
+    }
+
+    public String getAgencia() {
+        return agencia;
+    }
+
+    public void setAgencia(String agencia) {
+        this.agencia = agencia;
+    }
+
+    public String getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public String getDireccionCliente() {
+        return direccionCliente;
+    }
+
+    public void setDireccionCliente(String direccionCliente) {
+        this.direccionCliente = direccionCliente;
     }
 }

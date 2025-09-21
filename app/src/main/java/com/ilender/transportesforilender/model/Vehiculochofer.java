@@ -48,4 +48,10 @@ public class Vehiculochofer {
     public void setVehiculo(String vehiculo) {
         this.vehiculo = vehiculo;
     }
+
+    @Override
+    public String toString() {
+        // 👇 Aquí decides qué mostrar en el Spinner
+        return  chofer;
+    }
 }

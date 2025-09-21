@@ -2,7 +2,9 @@ package com.ilender.transportesforilender.activitys;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -50,6 +52,7 @@ import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.ilender.transportesforilender.R;
+import com.ilender.transportesforilender.model.Agencia;
 import com.ilender.transportesforilender.model.Clientes;
 import com.ilender.transportesforilender.model.Direccion;
 import com.ilender.transportesforilender.model.Ruta;
@@ -65,20 +68,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class AsignarRutasActivity extends AppCompatActivity {
 
-    private String idChofer, idVehiculo, idDireccion, idCliente, strDate,currentPhotoPath, idRutaIntent;
+    private String idChofer, idVehiculo, idDireccion, idCliente, strDate,currentPhotoPath, idRutaIntent, tipoEntrega = "Delivery", idAgencia = "";
     private EditText fechaDisponibilidad;
     private StorageReference mStorage;
     private TextView txtfechaAsignacion, titulo;
     private MaterialCardView card;
     private Button btnConsultar, btnGrabar, btnSubirImagenSB;
-    private Spinner spVehiculos, spDireccion, spClientes;
+    private Spinner spVehiculos, spDireccion, spClientes , spTipoEntrega, spAgencias;
     ImageProvider mImageProvider;
     private int position;
-    private LinearLayout layoutOculto, linearLayoutImagen;
+    private LinearLayout layoutOculto, linearLayoutImagen , layoutAgencia, layoutClienteDireccion;
     private ConstraintLayout layoutImagenes;
     private Button btnVisualizar, btnSiguiente, btnTomarImagenSB, btnAnterior;
     private ArrayList<File> mImageFiles;
@@ -118,6 +124,12 @@ public class AsignarRutasActivity extends AppCompatActivity {
         mImageProvider = new ImageProvider();
         btnSubirImagenSB = findViewById(R.id.btnSubirImagenAS);
         checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
+        spTipoEntrega = findViewById(R.id.spTipoEntrega);
+        spAgencias = findViewById(R.id.spAgencias);
+        layoutAgencia = findViewById(R.id.layoutAgencia);
+
+
+
         if(idRutaIntent!=null){
             Log.d("PruebaASDADASDASDSADASDSAD", idRutaIntent);
             titulo.setText("MODIFICACION DE CONTENIDO DE RUTA");
@@ -175,6 +187,33 @@ public class AsignarRutasActivity extends AppCompatActivity {
                 CargarFecha();
             }
         });
+
+        ArrayAdapter<String> adapterTipo = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item,
+                new String[]{"Agencia", "Delivery"});
+        adapterTipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTipoEntrega.setAdapter(adapterTipo);
+
+        spTipoEntrega.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                tipoEntrega = parent.getItemAtPosition(position).toString();
+                if(tipoEntrega.equals("Agencia")){
+                    layoutAgencia.setVisibility(View.VISIBLE);
+                    layoutOculto.setVisibility(View.GONE);
+                    CargarAgencias();
+                }else{
+                    layoutAgencia.setVisibility(View.GONE);
+                    layoutOculto.setVisibility(View.VISIBLE);
+                    CargarClientes();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+
         spVehiculos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -268,27 +307,33 @@ public class AsignarRutasActivity extends AppCompatActivity {
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(idRutaIntent!=null){
+                if(idRutaIntent != null){
                     saveImage(idRutaIntent);
-                    Toast.makeText(AsignarRutasActivity.this, "Se ha grabado correctamente la información!", Toast.LENGTH_SHORT).show();
-                    //Intent i = new Intent(AsignarRutasActivity.this, ChoferFragment.class);
-                    Intent intent = new Intent(AsignarRutasActivity.this, AnimacionCheckActivity.class);
-                    startActivity(intent);
-                    onBackPressed();
-                }else{
-                    if(idChofer.equals("")||idDireccion.equals("")||fechaDisponibilidad.getText().toString().equals("")||idVehiculo.equals("")){
+                    // ...
+                } else {
+                    if(idChofer.equals("") || idVehiculo.equals("") || fechaDisponibilidad.getText().toString().equals("")){
                         Toast.makeText(AsignarRutasActivity.this, "Todos los datos son obligatorios!", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Ruta rutaActual = new Ruta(idChofer,idDireccion,"P",fechaDisponibilidad.getText().toString(),idVehiculo);
+                    } else {
                         DatabaseReference mrefRuta = FirebaseDatabase.getInstance().getReference().child("Ruta");
                         String idRuta = mrefRuta.push().getKey();
+
+                        Ruta rutaActual;
+                        if(tipoEntrega.equals("Agencia")){
+                            rutaActual = new Ruta(idChofer, idAgencia, "P",
+                                    fechaDisponibilidad.getText().toString(), idVehiculo);
+                            rutaActual.setTipoEntrega("Agencia");
+                        } else {
+                            rutaActual = new Ruta(idChofer, idDireccion, "P",
+                                    fechaDisponibilidad.getText().toString(), idVehiculo);
+                            rutaActual.setTipoEntrega("Delivery");
+                            rutaActual.setCliente(idCliente); // si quieres guardar cliente también
+                        }
 
                         mrefRuta.child(idRuta).setValue(rutaActual).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 saveImage(idRuta);
                                 Toast.makeText(AsignarRutasActivity.this, "Se ha grabado correctamente la información!", Toast.LENGTH_SHORT).show();
-                                //Intent i = new Intent(AsignarRutasActivity.this,ChoferFragment.class);
                                 Intent intent = new Intent(AsignarRutasActivity.this, AnimacionCheckActivity.class);
                                 startActivity(intent);
                                 onBackPressed();
@@ -298,6 +343,7 @@ public class AsignarRutasActivity extends AppCompatActivity {
                 }
             }
         });
+
         btnSubirImagenSB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -361,6 +407,38 @@ public class AsignarRutasActivity extends AppCompatActivity {
                     Toast.makeText(AsignarRutasActivity.this, "No hay más imágenes", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+    }
+
+    private void CargarAgencias(){
+        DatabaseReference mrefAgencias = FirebaseDatabase.getInstance().getReference().child("Agencias");
+        mrefAgencias.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Agencia> ags = new ArrayList<>();
+                for(DataSnapshot postSnapshot : snapshot.getChildren()){
+                    Agencia ag = postSnapshot.getValue(Agencia.class);
+                    ag.setIdAgencia(postSnapshot.getKey());
+                    ags.add(ag);
+                }
+                ArrayAdapter<Agencia> adapterAgencia = new ArrayAdapter<>(AsignarRutasActivity.this,
+                        androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, ags);
+                spAgencias.setAdapter(adapterAgencia);
+
+                spAgencias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Agencia a = (Agencia) parent.getItemAtPosition(position);
+                        idAgencia = a.getIdAgencia();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) { }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
     private void CargarDirecciones(String idCliente){
@@ -487,7 +565,7 @@ public class AsignarRutasActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     if(task.isSuccessful()){
-                        
+
                     }else{
                         Toast.makeText(AsignarRutasActivity.this, "Hubo error al almacenar la imagen", Toast.LENGTH_SHORT).show();
                     }

@@ -156,6 +156,78 @@
 
                     </LinearLayout>
 
+                    <!-- Spinner para elegir tipo de entrega -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center_vertical"
+                            android:text="Tipo entrega"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:textStyle="bold"/>
+
+                        <Spinner
+                            android:id="@+id/spTipoEntrega"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginLeft="16dp"
+                            android:dropDownWidth="250dp"/>
+                    </LinearLayout>
+
+                    <!-- Bloque Agencia -->
+                    <LinearLayout
+                        android:id="@+id/layoutAgencia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center_vertical"
+                            android:text="Agencia"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:textStyle="bold"/>
+
+                        <Spinner
+                            android:id="@+id/spAgencias"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="16dp"
+                            android:dropDownWidth="350dp"/>
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
