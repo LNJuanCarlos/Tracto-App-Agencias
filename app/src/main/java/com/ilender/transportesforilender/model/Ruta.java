@@ -19,7 +19,6 @@ public class Ruta {
 
     // Si es delivery
     private String cliente; // nombre o id del cliente
-    private String direccionCliente;
 
     public Ruta(){
 
@@ -27,15 +26,14 @@ public class Ruta {
 
 
     // Constructor para Delivery
-    public Ruta(String chofer, String vehiculo, String estado, String fecha, String cliente, String direccionCliente) {
+    public Ruta(String chofer, String vehiculo, String estado, String fecha, String cliente, String direccion) {
         this.chofer = chofer;
         this.vehiculo = vehiculo;
         this.estado = estado;
         this.fecha = fecha;
         this.tipoEntrega = "DELIVERY";
         this.cliente = cliente;
-        this.direccionCliente = direccionCliente;
-        this.direccion = direccionCliente; // compatibilidad con tu campo actual
+        this.direccion = direccion; // compatibilidad con tu campo actual
     }
 
     // Constructor para Agencia
@@ -121,11 +119,4 @@ public class Ruta {
         this.cliente = cliente;
     }
 
-    public String getDireccionCliente() {
-        return direccionCliente;
-    }
-
-    public void setDireccionCliente(String direccionCliente) {
-        this.direccionCliente = direccionCliente;
-    }
 }

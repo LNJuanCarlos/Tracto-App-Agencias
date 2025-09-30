@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,6 +31,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -84,7 +86,7 @@ public class AsignarRutasActivity extends AppCompatActivity {
     private Spinner spVehiculos, spDireccion, spClientes , spTipoEntrega, spAgencias;
     ImageProvider mImageProvider;
     private int position;
-    private LinearLayout layoutOculto, linearLayoutImagen , layoutAgencia, layoutClienteDireccion;
+    private LinearLayout layoutOculto, linearLayoutImagen , layoutAgencia, layoutClientes, layoutDirecciones, layoutComprobante;
     private ConstraintLayout layoutImagenes;
     private Button btnVisualizar, btnSiguiente, btnTomarImagenSB, btnAnterior;
     private ArrayList<File> mImageFiles;
@@ -92,7 +94,10 @@ public class AsignarRutasActivity extends AppCompatActivity {
     private ImageView imageSwitcher;
     private static final int STORAGE_PERMISSION_CODE = 101;
     private int positionis;
+    private int currentIndex = 0;
     static final int REQUEST_TAKE_PHOTO = 1;
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -127,6 +132,11 @@ public class AsignarRutasActivity extends AppCompatActivity {
         spTipoEntrega = findViewById(R.id.spTipoEntrega);
         spAgencias = findViewById(R.id.spAgencias);
         layoutAgencia = findViewById(R.id.layoutAgencia);
+        layoutClientes = findViewById(R.id.layoutClientes);
+        layoutDirecciones = findViewById(R.id.layoutDirecciones);
+        layoutComprobante = findViewById(R.id.layoutComprobante);
+
+
 
 
 
@@ -190,7 +200,7 @@ public class AsignarRutasActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapterTipo = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item,
-                new String[]{"Agencia", "Delivery"});
+                new String[]{"AGENCIA", "DELIVERY"});
         adapterTipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spTipoEntrega.setAdapter(adapterTipo);
 
@@ -198,13 +208,31 @@ public class AsignarRutasActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 tipoEntrega = parent.getItemAtPosition(position).toString();
-                if(tipoEntrega.equals("Agencia")){
+
+                if(tipoEntrega.equals("AGENCIA")){
+                    // Mostrar todos los layouts de Agencia
                     layoutAgencia.setVisibility(View.VISIBLE);
+                    layoutClientes.setVisibility(View.VISIBLE);      // Spinner de clientes
+                    layoutDirecciones.setVisibility(View.VISIBLE);   // Spinner de direcciones
+                    layoutComprobante.setVisibility(View.VISIBLE);   // SELECCIONE COMO DESEA ADJUNTAR SU COMPROBANTE
+
+                    // Ocultar layouts de Delivery
                     layoutOculto.setVisibility(View.GONE);
+
+                    // Cargar datos de agencias y clientes asociados si es necesario
                     CargarAgencias();
-                }else{
-                    layoutAgencia.setVisibility(View.GONE);
+                    CargarClientes(); // si quieres refrescar la lista de clientes
+                } else {
+                    // Mostrar layouts de Delivery
                     layoutOculto.setVisibility(View.VISIBLE);
+
+                    // Ocultar layouts de Agencia
+                    layoutAgencia.setVisibility(View.GONE);
+                    layoutClientes.setVisibility(View.VISIBLE);
+                    layoutDirecciones.setVisibility(View.VISIBLE);
+                    layoutComprobante.setVisibility(View.VISIBLE); // ✅ ahora lo ocultas
+
+                    // Cargar datos de clientes para Delivery
                     CargarClientes();
                 }
             }
@@ -255,51 +283,87 @@ public class AsignarRutasActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 txtfechaAsignacion.setText(fechaDisponibilidad.getText().toString());
-                Query mrefVehiculoChofer = FirebaseDatabase.getInstance().getReference().child("Vehiculochofer");
+                Log.d("DEBUG_APP", "-> Consultando Vehiculochofer para fecha: " + fechaDisponibilidad.getText().toString());
 
-                mrefVehiculoChofer.orderByChild("fecha").equalTo(fechaDisponibilidad.getText().toString()).addValueEventListener(new ValueEventListener() {
+                Query mrefVehiculoChofer = FirebaseDatabase.getInstance()
+                        .getReference()
+                        .child("Vehiculochofer")
+                        .orderByChild("fecha")
+                        .equalTo(fechaDisponibilidad.getText().toString());
+
+                mrefVehiculoChofer.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         ArrayList<Vehiculochofer> vh = new ArrayList<>();
                         ArrayList<Vehiculos> vs2 = new ArrayList<>();
-                        for(DataSnapshot postSnapshot : snapshot.getChildren()){
+
+                        Log.d("DEBUG_APP", "-> Total Vehiculochofer encontrados: " + snapshot.getChildrenCount());
+
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                             Vehiculochofer vehiculochofer = postSnapshot.getValue(Vehiculochofer.class);
-                            if(vehiculochofer.getChofer().equals(idChofer)){
+                            if (vehiculochofer != null && vehiculochofer.getChofer().equals(idChofer)) {
                                 vehiculochofer.setId(postSnapshot.getKey());
                                 vh.add(vehiculochofer);
-                                DatabaseReference mrefVehiculo = FirebaseDatabase.getInstance().getReference().child("Vehiculos");
-                                mrefVehiculo.child(vehiculochofer.getVehiculo()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        Vehiculos vehiculoObtenido = snapshot.getValue(Vehiculos.class);
-                                        vehiculoObtenido.setIdVehiculos(snapshot.getKey());
-                                        vs2.add(vehiculoObtenido);
 
-                                        ArrayAdapter<Vehiculos> adapter = new ArrayAdapter<Vehiculos>(AsignarRutasActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,vs2);
-                                        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-                                        spVehiculos.setAdapter(adapter);
-                                    }
+                                Log.d("DEBUG_APP", "-> Vehiculochofer válido -> chofer: "
+                                        + vehiculochofer.getChofer()
+                                        + " vehiculo: " + vehiculochofer.getVehiculo());
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
+                                DatabaseReference mrefVehiculo = FirebaseDatabase.getInstance()
+                                        .getReference()
+                                        .child("Vehiculos");
 
-                                    }
-                                });
+                                Log.d("DEBUG_APP", "-> Iniciando cargarVehiculos para ID: " + vehiculochofer.getVehiculo());
+
+                                mrefVehiculo.child(vehiculochofer.getVehiculo())
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                Vehiculos vehiculoObtenido = snapshot.getValue(Vehiculos.class);
+                                                if (vehiculoObtenido != null) {
+                                                    vehiculoObtenido.setIdVehiculos(snapshot.getKey());
+                                                    vs2.add(vehiculoObtenido);
+
+                                                    ArrayAdapter<Vehiculos> adapter =
+                                                            new ArrayAdapter<>(AsignarRutasActivity.this,
+                                                                    androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                                                                    vs2);
+                                                    adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+                                                    spVehiculos.setAdapter(adapter);
+
+                                                    Log.d("DEBUG_APP", "-> Vehiculo obtenido: "
+                                                            + vehiculoObtenido.getIdVehiculos()
+                                                            + " - " + vehiculoObtenido.getMarca()
+                                                            + " - " + vehiculoObtenido.getPlaca());
+                                                    Log.d("DEBUG_APP", "-> Spinner cargado con " + vs2.size() + " vehículos");
+
+                                                    // ⚡ Aquí ya es seguro mostrar los layouts y cargar clientes
+                                                    Log.d("DEBUG_APP", "-> Vehículos encontrados, cargando clientes...");
+                                                    CargarClientes();
+                                                    layoutOculto.setVisibility(View.VISIBLE);
+                                                    layoutImagenes.setVisibility(View.VISIBLE);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Log.e("DEBUG_APP", "-> Error cargando vehículo: " + error.getMessage());
+                                            }
+                                        });
                             }
                         }
-                        if(vh.size()==0){
-                            Toast.makeText(AsignarRutasActivity.this, "El chofer no tiene vehículos asignados para esta fecha!", Toast.LENGTH_SHORT).show();
+
+                        if (vh.size() == 0) {
+                            Toast.makeText(AsignarRutasActivity.this,
+                                    "El chofer no tiene vehículos asignados para esta fecha!",
+                                    Toast.LENGTH_SHORT).show();
                             layoutOculto.setVisibility(View.GONE);
-                        }else{
-                            CargarClientes();
-                            layoutOculto.setVisibility(View.VISIBLE);
-                            layoutImagenes.setVisibility(View.VISIBLE);
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Log.e("DEBUG_APP", "-> Error consultando Vehiculochofer: " + error.getMessage());
                     }
                 });
             }
@@ -307,39 +371,61 @@ public class AsignarRutasActivity extends AppCompatActivity {
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(idRutaIntent != null){
+                if (idRutaIntent != null) {
                     saveImage(idRutaIntent);
                     // ...
                 } else {
-                    if(idChofer.equals("") || idVehiculo.equals("") || fechaDisponibilidad.getText().toString().equals("")){
+                    // valida campos necesarios
+                    if (idChofer == null || idChofer.isEmpty()
+                            || idVehiculo == null || idVehiculo.isEmpty()
+                            || fechaDisponibilidad.getText().toString().isEmpty()) {
+
                         Toast.makeText(AsignarRutasActivity.this, "Todos los datos son obligatorios!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        DatabaseReference mrefRuta = FirebaseDatabase.getInstance().getReference().child("Ruta");
-                        String idRuta = mrefRuta.push().getKey();
+                        return;
+                    }
 
-                        Ruta rutaActual;
-                        if(tipoEntrega.equals("Agencia")){
-                            rutaActual = new Ruta(idChofer, idAgencia, "P",
-                                    fechaDisponibilidad.getText().toString(), idVehiculo);
-                            rutaActual.setTipoEntrega("Agencia");
-                        } else {
-                            rutaActual = new Ruta(idChofer, idDireccion, "P",
-                                    fechaDisponibilidad.getText().toString(), idVehiculo);
-                            rutaActual.setTipoEntrega("Delivery");
-                            rutaActual.setCliente(idCliente); // si quieres guardar cliente también
-                        }
+                    DatabaseReference mrefRuta = FirebaseDatabase.getInstance().getReference().child("Ruta");
+                    final String idRuta = mrefRuta.push().getKey();
 
-                        mrefRuta.child(idRuta).setValue(rutaActual).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                    // Construir objeto Ruta DE FORMA EXPLÍCITA CON SETTERS
+                    Ruta rutaActual = new Ruta(); // constructor vacío
+                    rutaActual.setChofer(idChofer);
+                    rutaActual.setVehiculo(idVehiculo);
+                    rutaActual.setEstado("P");
+                    rutaActual.setFecha(fechaDisponibilidad.getText().toString());
+
+                    if ("AGENCIA".equalsIgnoreCase(tipoEntrega)) {
+                        rutaActual.setTipoEntrega("AGENCIA");
+                        rutaActual.setAgencia(idAgencia);      // asigna agencia
+                        // asegurarse de no dejar campos de delivery
+                        rutaActual.setCliente(null);
+                        rutaActual.setDireccion(idDireccion);
+
+                    } else { // DELIVERY
+                        rutaActual.setTipoEntrega("DELIVERY");
+                        rutaActual.setCliente(idCliente);            // id del cliente seleccionado
+                        rutaActual.setDireccion(idDireccion); // id o texto de la dirección seleccionada
+                        // eliminar/limpiar el campo agencia para que no se guarde en Firebase
+                        rutaActual.setAgencia(null);
+                        // si quieres mantener compatibilidad con un campo 'direccion', puedes:
+                        //rutaActual.setDireccion(idDireccion); // opcional: si tu negocio requiere llenar 'direccion'
+                    }
+
+                    // Guardar en Firebase (campos null no se guardan)
+                    mrefRuta.child(idRuta).setValue(rutaActual).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
                                 saveImage(idRuta);
                                 Toast.makeText(AsignarRutasActivity.this, "Se ha grabado correctamente la información!", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(AsignarRutasActivity.this, AnimacionCheckActivity.class);
                                 startActivity(intent);
                                 onBackPressed();
+                            } else {
+                                Toast.makeText(AsignarRutasActivity.this, "Error al grabar: " + task.getException(), Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             }
         });
@@ -356,32 +442,40 @@ public class AsignarRutasActivity extends AppCompatActivity {
         btnVisualizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(mImageFiles.size()>0){
+                if (imagesUri != null && imagesUri.size() > 0) {
+                    // Mostrar la primera imagen siempre
                     Glide.with(getApplicationContext())
-                            .load(imagesUri.get(1))
+                            .load(imagesUri.get(0))
                             .into(imageSwitcher);
+
+                    // Guardamos índice actual para navegación
+                    currentIndex = 0;
+
+                    // Mostrar el layout e íconos de navegación
                     linearLayoutImagen.setVisibility(View.VISIBLE);
                     btnAnterior.setVisibility(View.VISIBLE);
                     btnSiguiente.setVisibility(View.VISIBLE);
-                }else{
-                    Toast.makeText(AsignarRutasActivity.this, "No ha tomado o seleccionado ninguna foto!", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(
+                            AsignarRutasActivity.this,
+                            "No ha tomado o seleccionado ninguna foto!",
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
             }
         });
         btnTomarImagenSB.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                try {
-                    linearLayoutImagen.setVisibility(View.GONE);
-                    btnAnterior.setVisibility(View.GONE);
-                    btnSiguiente.setVisibility(View.GONE);
-                    dispatchTakePictureIntent();
-                }catch (IOException e){
-                    throw new RuntimeException(e);
-                }
+            public void onClick(View v) {
+                Intent intent = new Intent(AsignarRutasActivity.this, CamaraActivity.class);
+                startActivityForResult(intent, 100);
+                abrirCamara();
             }
         });
+
+
+
         btnAnterior.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -410,6 +504,48 @@ public class AsignarRutasActivity extends AppCompatActivity {
         });
     }
 
+
+    private void cargarVehiculos(String idVehiculo) {
+        Log.d("DEBUG_APP", "-> Iniciando cargarVehiculos para ID: " + idVehiculo);
+
+        DatabaseReference mrefVehiculo = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Vehiculos");
+
+        mrefVehiculo.child(idVehiculo).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Vehiculos vehiculoObtenido = snapshot.getValue(Vehiculos.class);
+                if (vehiculoObtenido != null) {
+                    vehiculoObtenido.setIdVehiculos(snapshot.getKey());
+
+                    Log.d("DEBUG_APP", "-> Vehiculo obtenido: " +
+                            vehiculoObtenido.getIdVehiculos() + " - " + vehiculoObtenido.toString());
+
+                    // Crear el adapter con UN solo vehículo
+                    ArrayList<Vehiculos> listaVehiculos = new ArrayList<>();
+                    listaVehiculos.add(vehiculoObtenido);
+
+                    ArrayAdapter<Vehiculos> adapter = new ArrayAdapter<>(
+                            AsignarRutasActivity.this,
+                            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                            listaVehiculos
+                    );
+                    adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+                    spVehiculos.setAdapter(adapter);
+
+                    Log.d("DEBUG_APP", "-> Spinner cargado con " + listaVehiculos.size() + " vehículos");
+                } else {
+                    Log.e("DEBUG_APP", "-> Vehiculo obtenido es NULL");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("DEBUG_APP", "Error en cargarVehiculos: " + error.getMessage());
+            }
+        });
+    }
     private void CargarAgencias(){
         DatabaseReference mrefAgencias = FirebaseDatabase.getInstance().getReference().child("Agencias");
         mrefAgencias.addValueEventListener(new ValueEventListener() {
@@ -465,29 +601,53 @@ public class AsignarRutasActivity extends AppCompatActivity {
             }
         });
     }
-    private void CargarClientes(){
-        DatabaseReference mrefClientes = FirebaseDatabase.getInstance().getReference().child("Clientes");
+    private void CargarClientes() {
+        DatabaseReference mrefClientes = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Clientes");
 
-        mrefClientes.addValueEventListener(new ValueEventListener() {
+        mrefClientes.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<Clientes> cl = new ArrayList<>();
-                for(DataSnapshot postSnapshot : snapshot.getChildren()){
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Clientes cliente = postSnapshot.getValue(Clientes.class);
-                    cliente.setIdCliente(postSnapshot.getKey());
-                    cl.add(cliente);
+                    if (cliente != null) {
+                        cliente.setIdCliente(postSnapshot.getKey());
+                        cl.add(cliente);
+                        Log.d("DEBUG_APP", "-> Cliente cargado: " + cliente.getNombres());
+                    }
                 }
-                ArrayAdapter<Clientes> adapterCliente = new ArrayAdapter<Clientes>(AsignarRutasActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,cl);
+
+                // ⚡️ Mostrar layouts **una sola vez** después de cargar todos los clientes
+                if (!cl.isEmpty()) {
+                    layoutOculto.setVisibility(View.VISIBLE);
+                    layoutImagenes.setVisibility(View.VISIBLE);
+                }
+
+                // Adapter para Spinner
+                ArrayAdapter<Clientes> adapterCliente = new ArrayAdapter<>(
+                        AsignarRutasActivity.this,
+                        androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                        cl
+                );
                 adapterCliente.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
                 spClientes.setAdapter(adapterCliente);
+
+                // Seleccionar primer cliente por defecto
+                if (!cl.isEmpty()) {
+                    spClientes.setSelection(0);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e("DEBUG_APP", "Error al cargar clientes: " + error.getMessage());
             }
         });
     }
+
     private void CargarFecha(){
         Calendar calendar = Calendar.getInstance();
         int YEAR = calendar.get(Calendar.YEAR);
@@ -506,6 +666,25 @@ public class AsignarRutasActivity extends AppCompatActivity {
             }
         },YEAR , MONTH , DATE);
         datePickerDialog.show();
+    }
+
+    private void abrirCamara() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            // Aquí agregas la foto a tu lista de imágenes
+        }
+
     }
 
     private void dispatchTakePictureIntent() throws IOException{
