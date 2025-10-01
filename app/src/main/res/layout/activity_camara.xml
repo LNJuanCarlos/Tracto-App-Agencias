@@ -10,9 +10,27 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/controlsLayout"
+        app:layout_constraintBottom_toTopOf="@+id/thumbnailsScroll"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Miniaturas de fotos -->
+    <HorizontalScrollView
+        android:id="@+id/thumbnailsScroll"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#66000000"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@+id/controlsLayout">
+
+        <LinearLayout
+            android:id="@+id/layoutThumbnails"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"/>
+    </HorizontalScrollView>
 
     <!-- Controles -->
     <LinearLayout
@@ -21,19 +39,26 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
+        android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <Button
-            android:id="@+id/btnTomarFoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="📸" />
 
         <Button
             android:id="@+id/btnListo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text="Listo" />
+
+        <!-- Este es tu botón de captura -->
+        <ImageButton
+            android:id="@+id/btnCapturar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_btn_capture"
+            android:scaleType="centerInside"
+            android:contentDescription="Capturar"
+            android:layout_margin="10dp" />
 
     </LinearLayout>
 

@@ -34,6 +34,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
@@ -97,7 +98,10 @@ public class AsignarRutasActivity extends AppCompatActivity {
     private int currentIndex = 0;
     static final int REQUEST_TAKE_PHOTO = 1;
 
+    private static final int REQUEST_CAMERA_PERMISSION = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_CODE_CAMARA = 100;
+    private List<Uri> fotosUris = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -439,112 +443,57 @@ public class AsignarRutasActivity extends AppCompatActivity {
                 btnSiguiente.setVisibility(View.GONE);
             }
         });
-        btnVisualizar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (imagesUri != null && imagesUri.size() > 0) {
-                    // Mostrar la primera imagen siempre
-                    Glide.with(getApplicationContext())
-                            .load(imagesUri.get(0))
-                            .into(imageSwitcher);
-
-                    // Guardamos índice actual para navegación
-                    currentIndex = 0;
-
-                    // Mostrar el layout e íconos de navegación
-                    linearLayoutImagen.setVisibility(View.VISIBLE);
-                    btnAnterior.setVisibility(View.VISIBLE);
-                    btnSiguiente.setVisibility(View.VISIBLE);
-
-                } else {
-                    Toast.makeText(
-                            AsignarRutasActivity.this,
-                            "No ha tomado o seleccionado ninguna foto!",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                }
+        btnVisualizar.setOnClickListener(v -> {
+            if (mImageFiles.isEmpty()) {
+                Toast.makeText(this, "No has tomado o seleccionado ninguna foto", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            // Mostrar la primera foto
+            currentIndex = 0;
+            mostrarFotoActual();
+
+            // Mostrar controles
+            linearLayoutImagen.setVisibility(View.VISIBLE);
+            btnAnterior.setVisibility(View.VISIBLE);
+            btnSiguiente.setVisibility(View.VISIBLE);
         });
+
         btnTomarImagenSB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AsignarRutasActivity.this, CamaraActivity.class);
                 startActivityForResult(intent, 100);
-                abrirCamara();
+                //abrirCamara();
             }
         });
 
 
 
-        btnAnterior.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(positionis>0){
-                    positionis--;
-                    Glide.with(getApplicationContext())
-                            .load(imagesUri.get(positionis))
-                            .into(imageSwitcher);
-                }else{
-                    Toast.makeText(AsignarRutasActivity.this, "No hay imagen previa", Toast.LENGTH_SHORT).show();
-                }
+        btnAnterior.setOnClickListener(v -> {
+            if (currentIndex > 0) {
+                currentIndex--;
+                mostrarFotoActual();
+            } else {
+                Toast.makeText(this, "Ya estás en la primera foto", Toast.LENGTH_SHORT).show();
             }
         });
-        btnSiguiente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(positionis<imagesUri.size()-1){
-                    positionis++;
-                    Glide.with(getApplicationContext())
-                            .load(imagesUri.get(positionis))
-                            .into(imageSwitcher);
-                }else{
-                    Toast.makeText(AsignarRutasActivity.this, "No hay más imágenes", Toast.LENGTH_SHORT).show();
-                }
+
+        btnSiguiente.setOnClickListener(v -> {
+            if (currentIndex < mImageFiles.size() - 1) {
+                currentIndex++;
+                mostrarFotoActual();
+            } else {
+                Toast.makeText(this, "Ya estás en la última foto", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-
-    private void cargarVehiculos(String idVehiculo) {
-        Log.d("DEBUG_APP", "-> Iniciando cargarVehiculos para ID: " + idVehiculo);
-
-        DatabaseReference mrefVehiculo = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("Vehiculos");
-
-        mrefVehiculo.child(idVehiculo).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Vehiculos vehiculoObtenido = snapshot.getValue(Vehiculos.class);
-                if (vehiculoObtenido != null) {
-                    vehiculoObtenido.setIdVehiculos(snapshot.getKey());
-
-                    Log.d("DEBUG_APP", "-> Vehiculo obtenido: " +
-                            vehiculoObtenido.getIdVehiculos() + " - " + vehiculoObtenido.toString());
-
-                    // Crear el adapter con UN solo vehículo
-                    ArrayList<Vehiculos> listaVehiculos = new ArrayList<>();
-                    listaVehiculos.add(vehiculoObtenido);
-
-                    ArrayAdapter<Vehiculos> adapter = new ArrayAdapter<>(
-                            AsignarRutasActivity.this,
-                            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                            listaVehiculos
-                    );
-                    adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-                    spVehiculos.setAdapter(adapter);
-
-                    Log.d("DEBUG_APP", "-> Spinner cargado con " + listaVehiculos.size() + " vehículos");
-                } else {
-                    Log.e("DEBUG_APP", "-> Vehiculo obtenido es NULL");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("DEBUG_APP", "Error en cargarVehiculos: " + error.getMessage());
-            }
-        });
+    private void mostrarFotoActual() {
+        if (!mImageFiles.isEmpty() && currentIndex >= 0 && currentIndex < mImageFiles.size()) {
+            File file = mImageFiles.get(currentIndex);
+            imageSwitcher.setImageURI(Uri.fromFile(file));
+        }
     }
     private void CargarAgencias(){
         DatabaseReference mrefAgencias = FirebaseDatabase.getInstance().getReference().child("Agencias");
@@ -668,50 +617,33 @@ public class AsignarRutasActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void abrirCamara() {
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
+            ArrayList<String> fotosUris = data.getStringArrayListExtra("fotos_uris");
+
+            if (fotosUris != null && !fotosUris.isEmpty()) {
+                for (String path : fotosUris) {
+                    File file = new File(path);
+                    if (file.exists()) {
+                        mImageFiles.add(file); // ✅ solo guardamos en la lista
+                    }
+                }
+                Toast.makeText(this, "Se guardaron " + fotosUris.size() + " fotos", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void lanzarIntentCamara() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            // Aquí agregas la foto a tu lista de imágenes
-        }
-
-    }
-
-    private void dispatchTakePictureIntent() throws IOException{
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        if(takePictureIntent.resolveActivity(getPackageManager()) !=null){
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            }catch (IOException ex){
-
-            }
-            if(photoFile != null){
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.ilender.transportesforilender.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
-                startActivityForResult(takePictureIntent,REQUEST_TAKE_PHOTO);
-                mImageFiles.clear();
-                imagesUri.clear();
-                imagesUri.add(photoURI);
-                Uri imageUri = Uri.fromFile(photoFile);
-                imagesUri.add(imageUri);
-                mImageFiles.add(photoFile);
-            }
-        }
-    }
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -798,17 +730,17 @@ public class AsignarRutasActivity extends AppCompatActivity {
         }
     }
 
+    // Manejar la respuesta del permiso
     @Override
-    public void onRequestPermissionsResult(int requestCode,String[] permissions, int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if(requestCode == STORAGE_PERMISSION_CODE){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                lanzarIntentCamara();
+            } else {
+                Toast.makeText(this, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 }

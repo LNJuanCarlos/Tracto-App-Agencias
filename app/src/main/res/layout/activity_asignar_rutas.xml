@@ -359,7 +359,9 @@
                             android:id="@+id/isIncidenciasAS"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_margin="15px">
+                            android:layout_margin="15px"
+                            android:scrollbarAlwaysDrawHorizontalTrack="true"
+                            >
 
                         </ImageView>
 
