@@ -144,57 +144,31 @@ public class AsignarRutasActivity extends AppCompatActivity {
 
 
 
-        if(idRutaIntent!=null){
-            Log.d("PruebaASDADASDASDSADASDSAD", idRutaIntent);
+        if (idRutaIntent != null) {
             titulo.setText("MODIFICACION DE CONTENIDO DE RUTA");
             layoutImagenes.setVisibility(View.VISIBLE);
             card.setVisibility(View.GONE);
             txtfechaAsignacion.setVisibility(View.GONE);
+
             mStorage = FirebaseStorage.getInstance().getReference().child("Guias");
             StorageReference filepath = mStorage.child(idRutaIntent).child("Inicio");
 
-            filepath.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
-                @Override
-                public void onSuccess(ListResult listResult) {
-                    ArrayList<Uri> uris = new ArrayList<>();
-                    for(StorageReference prefix : listResult.getPrefixes()){
-                    }
-                    for(StorageReference item : listResult.getItems()){
-                        item.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                if(uri.equals(null)){
-                                    linearLayoutImagen.setVisibility(View.GONE);
-                                    btnAnterior.setVisibility(View.GONE);
-                                    btnSiguiente.setVisibility(View.GONE);
-                                }else{
-                                    linearLayoutImagen.setVisibility(View.VISIBLE);
-                                    btnAnterior.setVisibility(View.VISIBLE);
-                                    btnSiguiente.setVisibility(View.VISIBLE);
-                                    btnSubirImagenSB.setEnabled(false);
-                                    btnTomarImagenSB.setEnabled(false);
-                                    btnVisualizar.setEnabled(false);
-                                    btnGrabar.setEnabled(false);
-                                }
-                                imagesUri.add(uri);
-                                uris.add(uri);
-                                if(imagesUri.size()==1){
-                                    Glide.with(AsignarRutasActivity.this)
-                                            .load(uri)
-                                            .into(imageSwitcher);
-                                }
-                            }
-                        });
-                    }
-                }
+            filepath.listAll().addOnSuccessListener(listResult -> {
+                for (StorageReference item : listResult.getItems()) {
+                    item.getDownloadUrl().addOnSuccessListener(uri -> {
+                        imagesUri.add(uri);
 
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
+                        if (imagesUri.size() == 1) { // primera foto remota
+                            currentIndex = 0;
+                            mostrarFotoActualRemoto();
+                        }
+                    });
                 }
+            }).addOnFailureListener(e -> {
+                Toast.makeText(this, "Error cargando imágenes: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         }
+
         fechaDisponibilidad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -444,19 +418,27 @@ public class AsignarRutasActivity extends AppCompatActivity {
             }
         });
         btnVisualizar.setOnClickListener(v -> {
-            if (mImageFiles.isEmpty()) {
-                Toast.makeText(this, "No has tomado o seleccionado ninguna foto", Toast.LENGTH_SHORT).show();
-                return;
+            if (!mImageFiles.isEmpty()) {
+                // 👉 Mostrar fotos locales
+                currentIndex = 0;
+                mostrarFotoActualLocal();
+
+                linearLayoutImagen.setVisibility(View.VISIBLE);
+                btnAnterior.setVisibility(View.VISIBLE);
+                btnSiguiente.setVisibility(View.VISIBLE);
+
+            } else if (!imagesUri.isEmpty()) {
+                // 👉 Mostrar fotos remotas
+                currentIndex = 0;
+                mostrarFotoActualRemoto();
+
+                linearLayoutImagen.setVisibility(View.VISIBLE);
+                btnAnterior.setVisibility(View.VISIBLE);
+                btnSiguiente.setVisibility(View.VISIBLE);
+
+            } else {
+                Toast.makeText(this, "No has tomado, subido o guardado ninguna foto", Toast.LENGTH_SHORT).show();
             }
-
-            // Mostrar la primera foto
-            currentIndex = 0;
-            mostrarFotoActual();
-
-            // Mostrar controles
-            linearLayoutImagen.setVisibility(View.VISIBLE);
-            btnAnterior.setVisibility(View.VISIBLE);
-            btnSiguiente.setVisibility(View.VISIBLE);
         });
 
         btnTomarImagenSB.setOnClickListener(new View.OnClickListener() {
@@ -473,20 +455,41 @@ public class AsignarRutasActivity extends AppCompatActivity {
         btnAnterior.setOnClickListener(v -> {
             if (currentIndex > 0) {
                 currentIndex--;
-                mostrarFotoActual();
+                if (!mImageFiles.isEmpty()) {
+                    mostrarFotoActualLocal();
+                } else {
+                    mostrarFotoActualRemoto();
+                }
             } else {
                 Toast.makeText(this, "Ya estás en la primera foto", Toast.LENGTH_SHORT).show();
             }
         });
 
         btnSiguiente.setOnClickListener(v -> {
-            if (currentIndex < mImageFiles.size() - 1) {
+            if (!mImageFiles.isEmpty() && currentIndex < mImageFiles.size() - 1) {
                 currentIndex++;
-                mostrarFotoActual();
+                mostrarFotoActualLocal();
+            } else if (mImageFiles.isEmpty() && currentIndex < imagesUri.size() - 1) {
+                currentIndex++;
+                mostrarFotoActualRemoto();
             } else {
                 Toast.makeText(this, "Ya estás en la última foto", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void mostrarFotoActualLocal() {
+        if (!mImageFiles.isEmpty() && currentIndex >= 0 && currentIndex < mImageFiles.size()) {
+            File file = mImageFiles.get(currentIndex);
+            imageSwitcher.setImageURI(Uri.fromFile(file));
+        }
+    }
+
+    private void mostrarFotoActualRemoto() {
+        if (!imagesUri.isEmpty() && currentIndex >= 0 && currentIndex < imagesUri.size()) {
+            Uri uri = imagesUri.get(currentIndex);
+            Glide.with(this).load(uri).into(imageSwitcher);
+        }
     }
 
     private void mostrarFotoActual() {
