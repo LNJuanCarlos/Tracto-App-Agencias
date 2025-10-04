@@ -34,6 +34,43 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202799069662:android:e77667afe767c5325d454f",
+        "android_client_info": {
+          "package_name": "tracto.camiones.usa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202799069662-meh07sj88sud660tl09nmtkkep2ntv4j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tracto.camiones.usa",
+            "certificate_hash": "64e0a9a32f8700b415eeaa66525fc46368e108a2"
+          }
+        },
+        {
+          "client_id": "202799069662-7dprgoiagmf4res6js7iu1n3c5o5mj4j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT1VBq5eE-6XDr8bguH4aI70r_caExo9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202799069662-7dprgoiagmf4res6js7iu1n3c5o5mj4j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

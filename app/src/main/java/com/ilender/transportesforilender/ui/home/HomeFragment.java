@@ -1,7 +1,6 @@
 package com.ilender.transportesforilender.ui.home;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -25,10 +23,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ilender.transportesforilender.R;
 import com.ilender.transportesforilender.databinding.FragmentHomeBinding;
-import com.ilender.transportesforilender.model.Choferes;
 import com.ilender.transportesforilender.model.Ruta;
 import com.ilender.transportesforilender.model.Usuarios;
-import com.ilender.transportesforilender.model.Vehiculos;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;

@@ -8,7 +8,7 @@ android {
     compileSdk 36
 
     defaultConfig {
-        applicationId "com.ilender.transportesforilender"
+        applicationId "tracto.camiones.usa"
         minSdk 30
         targetSdk 36
         versionCode 4

@@ -1,6 +1,5 @@
 package com.ilender.transportesforilender.adapters;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;

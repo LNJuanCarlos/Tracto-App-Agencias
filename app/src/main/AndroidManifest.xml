@@ -80,7 +80,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.ilender.transportesforilender.provider"
+            android:authorities="tracto.camiones.usa.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

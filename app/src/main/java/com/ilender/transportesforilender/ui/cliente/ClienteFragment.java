@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -36,7 +34,6 @@ import com.ilender.transportesforilender.R;
 import com.ilender.transportesforilender.activitys.FormularioClienteActivity;
 import com.ilender.transportesforilender.adapters.ClienteAdapter;
 import com.ilender.transportesforilender.databinding.FragmentClienteBinding;
-import com.ilender.transportesforilender.model.Choferes;
 import com.ilender.transportesforilender.model.Clientes;
 
 import java.util.ArrayList;
